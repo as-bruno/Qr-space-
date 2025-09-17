@@ -1,0 +1,567 @@
+[
+  {
+    "id": "000001",
+    "name": "Charging station ",
+    "location": "Douala ",
+    "price": "10000",
+    "description": "Band New apple devices wireless charging station ",
+    "date_added": "2025-09-12T00:32:21.147018+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000001_1.jpg",
+      "000001_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 3,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000002",
+    "name": "Samsung Galaxy s24 ultra ",
+    "location": "Douala ",
+    "price": "150000",
+    "description": "Samsung Galaxy s24 ultra freshly out of the box ",
+    "date_added": "2025-09-12T00:34:10.846911+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000002_1.jpg",
+      "000002_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 2,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000003",
+    "name": "Massage station ",
+    "location": "Douala ",
+    "price": "200000",
+    "description": "A confortable massaging chear from China brand new ",
+    "date_added": "2025-09-12T00:37:06.513256+00:00",
+    "web_details": "",
+    "type": "Electronics",
+    "image_filenames": [
+      "000003_1.jpg",
+      "000003_2.jpg",
+      "000003_3.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 2,
+    "inquiries": 1,
+    "home_delivery": false
+  },
+  {
+    "id": "000004",
+    "name": "Classic laptops ",
+    "location": "Douala ",
+    "price": "300000",
+    "description": "Ones time offer from are shop cheap laptop ",
+    "date_added": "2025-09-12T00:40:51.771329+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000004_1.jpg",
+      "000004_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 2,
+    "inquiries": 0,
+    "home_delivery": false
+  },
+  {
+    "id": "000005",
+    "name": "Samsung Galaxy plus charging ",
+    "location": "Douala ",
+    "price": "190000",
+    "description": "This is a big flag offer to are regular customer ",
+    "date_added": "2025-09-12T00:43:21.133087+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000005_1.jpg",
+      "000005_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 4,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000006",
+    "name": "Windows 11 laptop ",
+    "location": "Douala ",
+    "price": "5000",
+    "description": "Get a free windows 11 setup verification code for your laptop ",
+    "date_added": "2025-09-12T00:45:04.882979+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000006_1.jpg",
+      "000006_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 4,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000007",
+    "name": "GTA hoodie ",
+    "location": "Douala ",
+    "price": "6000",
+    "description": "Good hoodie in all colors you know ",
+    "date_added": "2025-09-12T00:47:05.852852+00:00",
+    "web_details": "",
+    "type": "Fashion",
+    "image_filenames": [
+      "000007_1.jpg",
+      "000007_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 3,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000008",
+    "name": "Good outing hear ",
+    "location": "Douala ",
+    "price": "14000",
+    "description": "Buy 3 get one free special offers ",
+    "date_added": "2025-09-12T00:50:14.550061+00:00",
+    "web_details": "",
+    "type": "Fashion",
+    "image_filenames": [
+      "000008_1.jpg",
+      "000008_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 1,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000009",
+    "name": "Chinese fashion ",
+    "location": "Douala ",
+    "price": "3000",
+    "description": "Good deal with china warehouse ",
+    "date_added": "2025-09-12T00:51:41.961054+00:00",
+    "web_details": "",
+    "type": "Fashion",
+    "image_filenames": [
+      "000009_1.jpg",
+      "000009_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 4,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000010",
+    "name": "Balanciaga ",
+    "location": "Douala ",
+    "price": "40000",
+    "description": "Balanciaga spécial offre ",
+    "date_added": "2025-09-12T00:53:57.936553+00:00",
+    "web_details": "",
+    "type": "Footwear",
+    "image_filenames": [
+      "000010_1.jpg",
+      "000010_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 0,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000011",
+    "name": "Yellow footwear ",
+    "location": "Douala ",
+    "price": "4000",
+    "description": "Outdoor or mountain claiming yellow and black ",
+    "date_added": "2025-09-12T00:57:02.660883+00:00",
+    "web_details": "",
+    "type": "Footwear",
+    "image_filenames": [
+      "000011_1.jpg",
+      "000011_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 3,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000012",
+    "name": "Dark shows",
+    "location": "Douala ",
+    "price": "7580",
+    "description": "Good for djoging ",
+    "date_added": "2025-09-12T00:58:59.837570+00:00",
+    "web_details": "",
+    "type": "Footwear",
+    "image_filenames": [
+      "000012_1.jpg",
+      "000012_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 1,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000013",
+    "name": "Wireless charging pad ",
+    "location": "Douala ",
+    "price": "5000",
+    "description": "Darck color wireless charging station ",
+    "date_added": "2025-09-12T09:01:43.510243+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000013_1.jpg",
+      "000013_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 2,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000014",
+    "name": "Samsung smart TV ",
+    "location": "Yaoundé ",
+    "price": "400000",
+    "description": "Big 4k latest version of the Samsung smart TV ",
+    "date_added": "2025-09-12T09:04:13.781724+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000014_1.jpg",
+      "000014_2.jpg",
+      "000014_3.jpg",
+      "000014_4.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 4,
+    "inquiries": 1,
+    "home_delivery": false
+  },
+  {
+    "id": "000015",
+    "name": "iPhone 17",
+    "location": "Yaoundé ",
+    "price": "600000",
+    "description": "The brand new iphone 17 pro max get it for a good price ",
+    "date_added": "2025-09-12T09:20:22.684378+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000015_1.jpg",
+      "000015_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000003",
+    "views": 4,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000016",
+    "name": "Motorola g edge ",
+    "location": "Yaoundé ",
+    "price": "150000",
+    "description": "Motorola with latest version of Android ",
+    "date_added": "2025-09-12T09:22:00.237793+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000016_1.jpg",
+      "000016_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000003",
+    "views": 1,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000017",
+    "name": "iPad air pro",
+    "location": "Libreville ",
+    "price": "500000",
+    "description": "Don't miss this opportunity get the iPad air pro for good price ",
+    "date_added": "2025-09-12T09:24:49.422386+00:00",
+    "web_details": "",
+    "type": "Electronics",
+    "image_filenames": [
+      "000017_1.jpg",
+      "000017_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000003",
+    "views": 5,
+    "inquiries": 2,
+    "home_delivery": true
+  },
+  {
+    "id": "000018",
+    "name": "iPad ",
+    "location": "Libreville ",
+    "price": "100000",
+    "description": "But this cheap second hand for the best quality ",
+    "date_added": "2025-09-12T09:26:44.117226+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000018_1.jpg",
+      "000018_2.jpg",
+      "000018_3.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000003",
+    "views": 5,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000019",
+    "name": "iPad pro book",
+    "location": "Libreville ",
+    "price": "60000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T09:30:56.821458+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000019_1.jpg",
+      "000019_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000003",
+    "views": 6,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000020",
+    "name": "Apple tablet ",
+    "location": "Libreville ",
+    "price": "150000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T09:32:10.595601+00:00",
+    "web_details": "",
+    "type": "Electronics",
+    "image_filenames": [
+      "000020_1.jpg",
+      "000020_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000003",
+    "views": 5,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000021",
+    "name": "Air conditioner ",
+    "location": "Libreville ",
+    "price": "300000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T10:25:38.833139+00:00",
+    "web_details": "",
+    "type": "Electronics",
+    "image_filenames": [
+      "000021_1.jpg",
+      "000021_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 0,
+    "inquiries": 0,
+    "home_delivery": false
+  },
+  {
+    "id": "000022",
+    "name": "Body lotion ",
+    "location": "Libreville ",
+    "price": "1500",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T10:27:11.136431+00:00",
+    "web_details": "",
+    "type": "Fashion",
+    "image_filenames": [
+      "000022_1.jpg",
+      "000022_2.jpg",
+      "000022_3.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 3,
+    "inquiries": 1,
+    "home_delivery": true
+  },
+  {
+    "id": "000023",
+    "name": "Nivea body lotion ",
+    "location": "Libreville ",
+    "price": "5000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T10:28:28.657408+00:00",
+    "web_details": "",
+    "type": "Fashion",
+    "image_filenames": [
+      "000023_1.jpg",
+      "000023_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 0,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000024",
+    "name": "Hoodie ",
+    "location": "Libreville ",
+    "price": "54000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T10:29:58.787663+00:00",
+    "web_details": "",
+    "type": "Fashion",
+    "image_filenames": [
+      "000024_1.jpg",
+      "000024_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 3,
+    "inquiries": 1,
+    "home_delivery": true
+  },
+  {
+    "id": "000025",
+    "name": "iPhone 16 ",
+    "location": "Libreville ",
+    "price": "200000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T10:31:04.865336+00:00",
+    "web_details": "",
+    "type": "Electronics",
+    "image_filenames": [
+      "000025_1.jpg",
+      "000025_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 3,
+    "inquiries": 0,
+    "home_delivery": true
+  },
+  {
+    "id": "000026",
+    "name": "iPhone 17 ",
+    "location": "Libreville ",
+    "price": "600000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T10:32:07.966352+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000026_1.jpg",
+      "000026_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 6,
+    "inquiries": 1,
+    "home_delivery": true
+  },
+  {
+    "id": "000027",
+    "name": "iPhone 4",
+    "location": "Libreville ",
+    "price": "3000",
+    "description": "This is the best quality of this product available on sale ",
+    "date_added": "2025-09-12T10:32:55.648067+00:00",
+    "web_details": "",
+    "type": "Apparel",
+    "image_filenames": [
+      "000027_1.jpg",
+      "000027_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000002",
+    "views": 11,
+    "inquiries": 3,
+    "home_delivery": false
+  },
+  {
+    "id": "000028",
+    "name": "iphone 4",
+    "location": "limbe",
+    "price": "40000",
+    "description": "go0d market for you",
+    "date_added": "2025-09-17T14:41:54.254804+00:00",
+    "web_details": "",
+    "type": "Electronics",
+    "image_filenames": [
+      "000028_1.jpg",
+      "000028_2.jpg"
+    ],
+    "link1": "",
+    "link2": "",
+    "admin_id": "000000003",
+    "views": 2,
+    "inquiries": 0,
+    "home_delivery": true
+  }
+]
