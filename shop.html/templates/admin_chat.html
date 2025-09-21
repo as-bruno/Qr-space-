@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Chat Dashboard</title>
+    <style>
+        :root {
+            --c-bg: #e9ecef; --c-text: #212529; --c-text-secondary: #6c757d; --c-card-bg: #ffffff; --c-accent: #0d6efd; --c-accent-darker: #0b5ed7; --c-border: #dee2e6; --c-shadow: rgba(0, 0, 0, 0.1); --c-chat-bubble-user: #f8f9fa; --c-chat-bubble-support: var(--c-accent);
+        }
+        body.dark-theme {
+            --c-bg: #121212; --c-text: #e9ecef; --c-text-secondary: #adb5bd; --c-card-bg: #1c1c1c; --c-accent: #3b82f6; --c-accent-darker: #2563eb; --c-border: #343a40; --c-shadow: rgba(0, 0, 0, 0.25); --c-chat-bubble-user: #2c2c2c; --c-chat-bubble-support: var(--c-accent);
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevents whole page scroll, layout handles internal scroll */
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--c-bg); color: var(--c-text); }
+        .admin-chat-layout { display: flex; height: 100%; }
+        .conversations-list { width: 320px; border-right: 1px solid var(--c-border); display: flex; flex-direction: column; background-color: var(--c-card-bg); transition: transform 0.3s ease-in-out; }
+        .list-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--c-border); flex-shrink: 0; }
+        .list-header h1 { font-size: 1.5rem; margin: 0; }
+        .list-body { 
+            overflow-y: auto; 
+            flex-grow: 1; 
+            padding: 0.75rem; /* Add padding around the items */
+        }
+        .convo-item { 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            padding: 1rem; /* Uniform padding */
+            cursor: pointer; 
+            border-radius: 10px; /* Rounded corners for the box effect */
+            margin-bottom: 0.75rem; /* Space between cards */
+            transition: background-color 0.2s, transform 0.2s ease-out, box-shadow 0.2s ease-out; 
+        }
+        .convo-item:hover { transform: translateY(-3px); box-shadow: 0 4px 12px var(--c-shadow); background-color: var(--c-bg); }
+        .convo-item.active { background-color: var(--c-accent); transform: translateY(-3px) scale(1.01); box-shadow: 0 6px 15px color-mix(in srgb, var(--c-accent) 35%, transparent); }
+        .convo-item.active .convo-name, .convo-item.active .convo-last-message, .convo-item.active small { color: white; }
+        .convo-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--c-text-secondary); color: var(--c-card-bg); display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .convo-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .convo-details { flex-grow: 1; overflow: hidden; }
+        .convo-name { font-weight: bold; }
+        .convo-last-message { font-size: 0.9em; color: var(--c-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .unread-badge {
+            position: absolute;
+            top: 12px; /* Adjusted for new padding */
+            right: 12px; /* Adjusted for new padding */
+            background-color: #dc3545; /* A standard notification red */
+            color: white;
+            border-radius: 50%;
+            width: 22px; /* Fixed width for a perfect circle */
+            height: 22px; /* Fixed height for a perfect circle */
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            box-shadow: 0 0 0 2px var(--c-card-bg); /* Creates a border effect matching the background */
+        }
+        .chat-window { flex-grow: 1; display: flex; flex-direction: column; transition: transform 0.3s ease-in-out; }
+        #no-convo-selected { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--c-text-secondary); font-size: 1.2rem; }
+        #active-chat-area { display: none; flex-direction: column; height: 100%; }
+        .chat-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--c-border);
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            background-color: var(--c-card-bg);
+            gap: 1rem;
+        }
+        .chat-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .home-link {
+            color: var(--c-text-secondary);
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .home-link:hover { background-color: var(--c-bg); color: var(--c-text); }
+        .home-link svg { width: 24px; height: 24px; stroke: currentColor; }
+        .chat-messages { flex-grow: 1; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+        .message { display: flex; max-width: 75%; flex-direction: column; }
+        .message-bubble { padding: 0.75rem 1rem; border-radius: 18px; line-height: 1.5; word-wrap: break-word; }
+        .message.user { align-self: flex-start; }
+        .message.user .message-bubble { background-color: var(--c-chat-bubble-user); color: var(--c-text); border: 1px solid var(--c-border); border-bottom-left-radius: 4px; }
+        .message.support { align-self: flex-end; }
+        .message.support .message-bubble { background-color: var(--c-chat-bubble-support); color: white; border-bottom-right-radius: 4px; }
+        .message-time {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--c-text-secondary);
+            margin-top: 0.25rem;
+            text-align: right;
+        }
+        .message.support .message-time { color: rgba(255, 255, 255, 0.7); }
+        .message-status {
+            font-size: 0.75rem;
+            color: var(--c-text-secondary);
+            text-align: right;
+            padding: 0 0.5rem 0.25rem;
+            align-self: flex-end;
+        }
+        .message.support .message-status { color: rgba(255, 255, 255, 0.7); }
+        .chat-input-area { 
+            padding: 1rem 1.5rem; 
+            padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); /* Add extra space at the bottom */
+            border-top: 1px solid var(--c-border); background-color: var(--c-card-bg); flex-shrink: 0; 
+        }
+        .chat-input-form { display: flex; gap: 1rem; }
+        #chat-input { flex-grow: 1; padding: 0.75rem 1rem; border: 1px solid var(--c-border); border-radius: 20px; background-color: var(--c-bg); color: var(--c-text); font-size: 1rem; }
+        #chat-input:focus { outline: none; border-color: var(--c-accent); }
+        #send-btn { background-color: var(--c-accent); border: none; color: white; padding: 0 1rem; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background-color 0.2s; }
+        #send-btn:hover { background-color: var(--c-accent-darker); }
+        
+        .back-btn { display: none; background: none; border: none; cursor: pointer; padding: 0; color: var(--c-accent); }
+        .back-btn svg { width: 24px; height: 24px; stroke: currentColor; }
+
+        /* New styles for options menu */
+        .header-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+        .options-menu { position: relative; }
+        .options-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--c-text-secondary);
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .options-btn:hover { background-color: var(--c-bg); color: var(--c-text); }
+        .options-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 0;
+            background-color: var(--c-card-bg);
+            border: 1px solid var(--c-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--c-shadow);
+            z-index: 10;
+            width: 160px;
+            padding: 0.5rem 0;
+            overflow: hidden;
+        }
+        .options-dropdown.show { display: block; }
+        .dropdown-item {
+            display: block;
+            text-decoration: none;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            color: var(--c-text);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+        .dropdown-item:hover { background-color: var(--c-bg); } /* Default hover */
+        .dropdown-item.delete-action { color: var(--c-danger); }
+        .dropdown-item.delete-action:hover { background-color: #f8d7da; } /* Light mode red hover */
+        body.dark-theme .dropdown-item.delete-action:hover { background-color: color-mix(in srgb, var(--c-danger) 15%, transparent); } /* Dark mode red hover */
+        .dropdown-item.signal-action:hover { background-color: color-mix(in srgb, var(--c-accent) 10%, transparent); } /* Subtle blue hover for report */
+        .dropdown-item:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .admin-chat-layout { position: relative; overflow-x: hidden; }
+            .conversations-list { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; border-right: none; }
+            .chat-window { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; transform: translateX(100%); }
+            body.chat-view-active .conversations-list { transform: translateX(-100%); }
+            body.chat-view-active .chat-window { transform: translateX(0); }
+            #no-convo-selected { display: none; } /* Hide this on mobile, list is always visible first */
+            .chat-header { gap: 1rem; }
+            .back-btn { display: block; }
+            .home-link { display: none; } /* Hide shop link in chat view on mobile to save space */
+        }
+    </style>
+</head>
+<body class=""> <!-- Class will be toggled by JS -->
+    <div class="admin-chat-layout">
+        <aside class="conversations-list" id="conversations-list">
+            <header class="list-header">
+                <h1>Conversations</h1>
+            </header>
+            <div class="list-body">
+                {% if not convo_list %}
+                    <p style="text-align: center; color: var(--c-text-secondary); padding: 1rem;">No conversations yet.</p>
+                {% endif %}
+                {% for convo in convo_list %}
+                    <div class="convo-item" data-conversation-id="{{ convo.id }}" data-user-name="{{ convo.user_name }}" data-user-id="{{ convo.user_id }}">
+                        <div class="convo-avatar">
+                            {% if convo.user_photo %}
+                                <img src="{{ convo.user_photo }}" alt="{{ convo.user_name }}">
+                            {% else %}
+                                {{ convo.user_name[0]|upper }}
+                            {% endif %}
+                        </div>
+                        <div class="convo-details">
+                            <div class="convo-name">{{ convo.user_name }}</div>
+                            <div class="convo-last-message">{{ convo.last_message_text }}</div>
+                            {% if is_main_admin %}
+                                <small style="font-size: 0.8em; color: var(--c-text-secondary);">with {{ convo.admin_name }}</small>
+                            {% endif %}
+                        </div>
+                        {% if convo.unread_count > 0 %}
+                            <div class="unread-badge">{{ convo.unread_count }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </aside>
+        <main class="chat-window">
+            <div id="no-convo-selected">
+                <p>Select a conversation from the left to begin.</p>
+            </div>
+            <div id="active-chat-area">
+                <header class="chat-header">
+                    <button class="back-btn" id="back-to-list-btn" aria-label="Back to conversations">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    </button>
+                    <a href="/" class="home-link" aria-label="Back to Shop">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    </a>
+                    <h1 id="chat-with-name"></h1>
+                    <div class="header-actions">
+                        <div class="options-menu">
+                            <button class="options-btn" id="chat-options-btn" aria-label="Chat options">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+                            </button>
+                            <div class="options-dropdown" id="chat-options-dropdown">
+                                <a href="#" id="report-user-link" class="dropdown-item signal-action" style="display: none;">Report User</a>
+                                <button type="button" class="dropdown-item delete-action">Delete Chat</button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <main class="chat-messages" id="chat-messages"></main>
+                <footer class="chat-input-area">
+                    <form class="chat-input-form" id="chat-form">
+                        <input type="text" id="chat-input" placeholder="Type your reply..." autocomplete="off" required>
+                        <button type="submit" id="send-btn">Send Reply</button>
+                    </form>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const allConversations = {{ all_conversations | tojson }};
+            const userMap = {{ user_map | tojson }};
+            let activeConversationId = null;
+            const currentUser = {{ user|tojson }};
+            const isMainAdmin = {{ is_main_admin | tojson }};
+            let amITheUserInThisConvo = false; // NEW: State to track role in the current conversation
+            let activeRecipientUserId = null;
+
+            const convoItems = document.querySelectorAll('.convo-item');
+            const noConvoSelectedView = document.getElementById('no-convo-selected');
+            const activeChatView = document.getElementById('active-chat-area');
+            const messagesContainer = document.getElementById('chat-messages');
+            const chatWithName = document.getElementById('chat-with-name');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const backToListBtn = document.getElementById('back-to-list-btn');
+            const body = document.body;
+            const listBody = document.querySelector('.list-body');
+            const optionsBtn = document.getElementById('chat-options-btn');
+            const optionsDropdown = document.getElementById('chat-options-dropdown');
+            const socket = io();
+
+            // --- Theme Application ---
+            const applyTheme = (theme) => {
+                document.body.classList.toggle('dark-theme', theme === 'dark');
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'theme') applyTheme(e.newValue);
+            });
+
+            // --- Handle opening a specific conversation from URL ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const convoToOpen = urlParams.get('open_convo');
+            if (convoToOpen) {
+                // Use a small timeout to ensure all DOM elements are rendered before we search for the item.
+                setTimeout(() => {
+                    const convoItemToSelect = document.querySelector(`.convo-item[data-conversation-id="${convoToOpen}"]`);
+                    if (convoItemToSelect) convoItemToSelect.click();
+                }, 150); // 150ms delay is a robust value.
+            }
+
+            function formatTime(isoString) {
+                if (!isoString) return '';
+                const date = new Date(isoString);
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            }
+
+            function renderSingleMessage(msg) {
+                // NEW: Determine if the message was sent by the currently logged-in admin
+                const wasSentByMe = (amITheUserInThisConvo && msg.sender === 'user') || (!amITheUserInThisConvo && msg.sender === 'admin');
+
+                // Hide automated system messages from the admin who initiated the report.
+                if (msg.is_system && wasSentByMe) {
+                    return ''; // Return an empty string to prevent it from being rendered.
+                }
+
+                // In admin_chat.html, 'support' is for sent messages, 'user' is for received.
+                const messageClass = wasSentByMe ? 'support' : 'user';
+                const seenHTML = (wasSentByMe && msg.seen) ? '<div class="message-status">Seen</div>' : '';
+
+                return `
+                    <div class="message ${messageClass}">
+                        <div class="message-bubble">
+                            ${DOMPurify.sanitize(msg.text)}
+                            <span class="message-time">${formatTime(msg.timestamp)}</span>
+                        </div>
+                        ${seenHTML}
+                    </div>
+                `;
+            }
+
+            const renderMessages = (userId) => {
+                const conversation = allConversations[activeConversationId] || [];
+                messagesContainer.innerHTML = conversation.map(renderSingleMessage).join('');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            };
+
+            const markMessagesAsSeen = async (convoId) => {
+                const unseen = (allConversations[convoId] || []).some(m => m.sender === 'user' && !m.seen);
+                if (!unseen) return;
+
+                try {
+                    await fetch(`/api/conversations/mark_seen`, { 
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ conversation_key: convoId })
+                    });
+                    (allConversations[convoId] || []).forEach(m => { if (m.sender === 'user') m.seen = true; });
+                } catch (error) {
+                    console.error("Failed to mark messages as seen:", error);
+                }
+            };
+
+            const selectConversation = (convoId, userName, userId) => {
+                activeConversationId = convoId;
+                activeRecipientUserId = userId;
+
+                // NEW: Determine the role of the current admin in this specific conversation
+                const [userPart, adminPart] = convoId.split('-');
+                amITheUserInThisConvo = currentUser.id === userPart;
+                body.classList.add('chat-view-active');
+                
+                // Update UI
+                noConvoSelectedView.style.display = 'none';
+                activeChatView.style.display = 'flex';
+                chatWithName.textContent = userName;
+                
+                convoItems.forEach(item => {
+                    item.classList.toggle('active', item.dataset.conversationId === convoId);
+                });
+
+                // Hide the notification badge for the selected conversation
+                const selectedConvoItem = document.querySelector(`.convo-item[data-conversation-id="${convoId}"]`);
+                if (selectedConvoItem) {
+                    const badge = selectedConvoItem.querySelector('.unread-badge');
+                    if (badge) {
+                        badge.style.display = 'none';
+                    }
+                }
+
+                renderMessages();
+                markMessagesAsSeen(convoId);
+
+                // --- NEW: Report Button Logic ---
+                const reportLink = document.getElementById('report-user-link');
+                const otherUser = userMap[userId];
+
+                // Conditions to show the report button:
+                // 1. The other user must exist and be an admin.
+                // 2. The current user must not be the main admin.
+                // 3. The current user cannot report themselves.
+                if (otherUser && otherUser.role === 'admin' && !isMainAdmin && currentUser.id !== otherUser.id) {
+                    reportLink.style.display = 'block';
+                    reportLink.href = `/chat?support=true&report_merchant_id=${userId}&report_merchant_name=${userName}`;
+                } else {
+                    reportLink.style.display = 'none';
+                }
+            };
+
+            convoItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    selectConversation(item.dataset.conversationId, item.dataset.userName, item.dataset.userId);
+                });
+            });
+
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const messageText = chatInput.value.trim();
+                if (!messageText || !activeConversationId) return;
+
+                socket.emit('new_message', {
+                    text: messageText,
+                    recipient_user_id: activeRecipientUserId, // Kept for backward compatibility, but conversation_id is now primary
+                    conversation_id: activeConversationId
+                });
+
+                chatInput.value = '';
+            });
+
+            socket.on('receive_message', (message) => {
+                // This is a safety check. The reporter should not receive the system message
+                // via socket, but if they do, this will prevent it from being rendered.
+                const wasSentByMe = (amITheUserInThisConvo && message.sender === 'user') || (!amITheUserInThisConvo && message.sender === 'admin');
+                if (message.is_system && wasSentByMe) {
+                    return;
+                }
+
+                const convoId = message.conversation_id;
+
+                // Add message to our local data store
+                if (!allConversations[convoId]) {
+                    allConversations[convoId] = [];
+                }
+                allConversations[convoId].push(message);
+
+                // Find or create the conversation item in the sidebar
+                let convoItem = document.querySelector(`.convo-item[data-conversation-id="${convoId}"]`);
+                
+                // If the conversation item doesn't exist, create it (for new chats)
+                if (!convoItem && message.user_info && message.admin_info) {
+                    const newUser = message.user_info;
+                    const newAdmin = message.admin_info;
+                    const mainAdminView = {{ is_main_admin | tojson }};
+                    const adminNameHTML = mainAdminView ? `<small style="font-size: 0.8em; color: var(--c-text-secondary);">with ${newAdmin.name}</small>` : '';
+                    const avatarHTML = newUser.photo 
+                        ? `<img src="${newUser.photo}" alt="${newUser.name}">` 
+                        : newUser.name[0].toUpperCase();
+
+                    const newItemHTML = `
+                        <div class="convo-item" data-conversation-id="${convoId}" data-user-name="${newUser.name}">
+                            <div class="convo-avatar">${avatarHTML}</div>
+                            <div class="convo-details">
+                                <div class="convo-name">${newUser.name}</div>
+                                <div class="convo-last-message"></div>
+                                ${adminNameHTML}
+                            </div>
+                            <div class="unread-badge" style="display: none;">0</div>
+                        </div>
+                    `;
+                    listBody.insertAdjacentHTML('afterbegin', newItemHTML); // Add to top of the list
+                    convoItem = listBody.querySelector(`.convo-item[data-conversation-id="${convoId}"]`);
+                    // Add the click listener to the newly created item
+                    if (convoItem && newUser) {
+                        convoItem.addEventListener('click', () => {
+                            selectConversation(convoItem.dataset.conversationId, convoItem.dataset.userName, newUser.id);
+                        });
+                    }
+                }
+
+                if (convoItem) {
+                    // --- NEW: Update name and avatar in case they changed ---
+                    if (message.user_info) {
+                        const newUser = message.user_info;
+                        convoItem.querySelector('.convo-name').textContent = newUser.name;
+                        convoItem.dataset.userName = newUser.name;
+
+                        const avatarDiv = convoItem.querySelector('.convo-avatar');
+                        if (avatarDiv) {
+                            avatarDiv.innerHTML = newUser.photo ? `<img src="${newUser.photo}" alt="${newUser.name}">` : newUser.name[0].toUpperCase();
+                        }
+
+                        // Also update the "with Admin" text if it exists
+                        const adminNameSmall = convoItem.querySelector('small');
+                        if(adminNameSmall && message.admin_info) {
+                            adminNameSmall.textContent = `with ${message.admin_info.name}`;
+                        }
+                    }
+
+                    convoItem.querySelector('.convo-last-message').textContent = message.text.replace(/<[^>]+>/g, ' ').trim() || '[Product Link]';
+                    
+                    // Move the updated item to the top of the list
+                    listBody.prepend(convoItem);
+
+                    // If the new message is from a user and we are not currently viewing that chat
+                    if (message.sender === 'user' && convoId !== activeConversationId) {
+                        let badge = convoItem.querySelector('.unread-badge');
+                        if (!badge) {
+                            // This case should be rare now, but as a fallback:
+                            convoItem.insertAdjacentHTML('beforeend', '<div class="unread-badge">0</div>');
+                            badge = convoItem.querySelector('.unread-badge');
+                        }
+                        const currentCount = parseInt(badge.textContent || '0', 10);
+                        badge.textContent = currentCount + 1;
+                        badge.style.display = 'flex';
+                    }
+                }
+
+                // If the message belongs to the currently active chat, append it to the view
+                if (convoId === activeConversationId) {
+                    messagesContainer.insertAdjacentHTML('beforeend', renderSingleMessage(message));
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    markMessagesAsSeen(activeConversationId); // Mark as seen since we are viewing it
+                }
+            });
+
+            // Mobile navigation
+            backToListBtn.addEventListener('click', () => {
+                body.classList.remove('chat-view-active');
+            });
+
+            // Options menu logic
+            if (activeChatView && optionsBtn && optionsDropdown) {
+                optionsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    optionsDropdown.classList.toggle('show');
+                });
+
+                optionsDropdown.addEventListener('click', async (e) => {
+                    // If the clicked element is the report link, let the browser handle it.
+                    if (e.target.id === 'report-user-link') {
+                        // The browser will navigate away, so we just need to close the dropdown.
+                    } else if (e.target.classList.contains('delete-action') && !e.target.disabled) {
+                        try {
+                            const response = await fetch(`/api/conversation/${activeConversationId}/delete`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+                            if (!response.ok) throw new Error('Failed to delete chat.');
+                            document.querySelector(`.convo-item[data-conversation-id="${activeConversationId}"]`)?.remove();
+                            activeConversationId = null;
+                            body.classList.remove('chat-view-active');
+                            noConvoSelectedView.style.display = 'flex';
+                            activeChatView.style.display = 'none';
+                        } catch (error) {
+                            console.error(`Error deleting chat: ${error.message}`);
+                        }
+                    }
+                    optionsDropdown.classList.remove('show');
+                });
+            }
+
+            // Close dropdown if clicking outside
+            window.addEventListener('click', () => {
+                if (optionsDropdown && optionsDropdown.classList.contains('show')) {
+                    optionsDropdown.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

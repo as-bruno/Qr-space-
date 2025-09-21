@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant Application</title>
+    <style>
+        :root {
+            --c-bg: #e9ecef; --c-text: #212529; --c-text-secondary: #6c757d; --c-header-bg: #ffffff; --c-card-bg: #ffffff; --c-accent: #0d6efd; --c-accent-darker: #0b5ed7; --c-border: #dee2e6; --c-shadow: rgba(0, 0, 0, 0.1);
+        }
+        body.dark-theme {
+            --c-bg: #121212; --c-text: #e9ecef; --c-text-secondary: #adb5bd; --c-header-bg: #1c1c1c; --c-card-bg: #1c1c1c; --c-accent: #3b82f6; --c-accent-darker: #2563eb; --c-border: #343a40; --c-shadow: rgba(0, 0, 0, 0.25);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .page-header h1 { font-size: 2.5rem; margin: 0; }
+        .page-header p { color: var(--c-text-secondary); max-width: 60ch; margin: 0.5rem auto 0; }
+
+        .form-card {
+            background-color: var(--c-card-bg);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--c-shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--c-text-secondary);
+        }
+        .form-group input[type="text"], .form-group input[type="tel"] {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--c-border);
+            border-radius: 8px;
+            background-color: var(--c-input-bg, #f1f1f1);
+            color: var(--c-input-text, #000);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--c-accent);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 20%, transparent);
+        }
+        .form-group .help-text {
+            font-size: 0.85rem;
+            color: var(--c-text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Profile Picture Upload */
+        .profile-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        #photo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--c-border);
+        }
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .btn-upload {
+            border: 1px solid var(--c-border);
+            color: var(--c-text);
+            background-color: var(--c-bg);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Map Section */
+        #map {
+            height: 300px;
+            width: 100%;
+            background-color: var(--c-bg);
+            border-radius: 8px;
+            border: 1px solid var(--c-border);
+            margin-bottom: 1rem;
+        }
+        #address-display {
+            font-style: italic;
+            color: var(--c-text-secondary);
+            padding: 0.5rem;
+            background-color: var(--c-bg);
+            border-radius: 4px;
+            min-height: 1.5em;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            border-top: 1px solid var(--c-border);
+            padding-top: 2rem;
+            text-align: right;
+        }
+        .btn-submit {
+            background-color: var(--c-accent);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-submit:hover { background-color: var(--c-accent-darker); }
+        .btn-submit:disabled { background-color: var(--c-text-secondary); cursor: not-allowed; }
+        .form-message {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .form-message.success { color: #16a34a; }
+        .form-message.error { color: #dc2626; }
+
+        .help-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--c-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px var(--c-shadow);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+        .help-fab:hover { transform: scale(1.1); }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <div>
+                <h1>Become a Merchant</h1>
+                <p>Complete the form below to start selling your products on our platform.</p>
+            </div>
+        </header>
+
+        <main>
+            <form id="merchant-application-form" class="form-card">
+                <p id="form-message" class="form-message"></p>
+
+                <div class="form-group">
+                    <label for="store_name">Store Name</label>
+                    <input type="text" id="store_name" name="store_name" placeholder="e.g., Bruno's Electronics" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="tel" id="phone_number" name="phone_number" placeholder="e.g., 670000000" required>
+                    <p class="help-text">This number will be used for WhatsApp and direct calls from customers. Please ensure it is registered on WhatsApp.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Store Profile Picture (Optional)</label>
+                    <div class="profile-upload">
+                        <img id="photo-preview" src="https://placehold.co/80x80/e9ecef/6c757d?text=Store" alt="Profile preview">
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="btn-upload">Upload Photo</button>
+                            <input type="file" id="photo" name="photo" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="map">Store Location (Optional)</label>
+                    <p class="help-text">Drag the pin on the map to set your precise store location. If you skip this, we will only use your city.</p>
+                    <div id="map"></div>
+                    <p id="address-display">Detecting location...</p>
+                </div>
+
+                <!-- Hidden inputs to store location data -->
+                <input type="hidden" id="ip_city" name="ip_city">
+                <input type="hidden" id="map_address" name="map_address">
+
+                <div class="form-actions">
+                    <button type="submit" id="submit-btn" class="btn-submit">Submit Application</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <a href="/chat?support=true" class="help-fab" title="Get Help">?</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Theme Application ---
+            const applyTheme = (theme) => {
+                document.body.classList.toggle('dark-theme', theme === 'dark');
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            // --- Form and UI Logic ---
+            const form = document.getElementById('merchant-application-form');
+            const photoInput = document.getElementById('photo');
+            const photoPreview = document.getElementById('photo-preview');
+            const messageEl = document.getElementById('form-message');
+            const submitBtn = document.getElementById('submit-btn');
+
+            photoInput.addEventListener('change', () => {
+                const file = photoInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => { photoPreview.src = e.target.result; };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+                messageEl.textContent = '';
+                messageEl.className = 'form-message';
+
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch('/api/apply-merchant', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.error || 'An unknown error occurred.');
+                    }
+
+                    messageEl.textContent = result.message;
+                    messageEl.classList.add('success');
+                    // Redirect to account page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/account';
+                    }, 2000);
+
+                } catch (error) {
+                    messageEl.textContent = error.message;
+                    messageEl.classList.add('error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Application';
+                }
+            });
+        });
+
+        // --- Google Maps Initialization ---
+        // This function is called by the Google Maps script tag when it loads.
+        function initMap() {
+            const mapElement = document.getElementById('map');
+            const addressDisplay = document.getElementById('address-display');
+            const mapAddressInput = document.getElementById('map_address');
+            const ipCityInput = document.getElementById('ip_city');
+            const defaultLocation = { lat: 4.0511, lng: 9.7679 }; // Douala, Cameroon
+
+            const map = new google.maps.Map(mapElement, {
+                center: defaultLocation,
+                zoom: 12,
+                mapTypeControl: false,
+                streetViewControl: false,
+            });
+
+            const marker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                draggable: true,
+                title: "Drag me to your store's location!"
+            });
+
+            const geocoder = new google.maps.Geocoder();
+
+            function updateLocation(lat, lng) {
+                const newPos = { lat, lng };
+                map.setCenter(newPos);
+                marker.setPosition(newPos);
+                // Trigger a geocode to get the address for the new position
+                geocodePosition(newPos);
+            }
+
+            function geocodePosition(pos) {
+                geocoder.geocode({ 'location': pos }, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            const address = results[0].formatted_address;
+                            addressDisplay.textContent = `Selected Address: ${address}`;
+                            mapAddressInput.value = address;
+                            // Extract city for the hidden input
+                            const cityComponent = results[0].address_components.find(c => c.types.includes('locality'));
+                            if (cityComponent) {
+                                ipCityInput.value = cityComponent.long_name;
+                            }
+                        } else {
+                            addressDisplay.textContent = 'No address found for this location.';
+                            mapAddressInput.value = '';
+                        }
+                    } else {
+                        addressDisplay.textContent = 'Geocoder failed due to: ' + status;
+                        mapAddressInput.value = '';
+                    }
+                });
+            }
+
+            // --- Geolocation Logic ---
+            // 1. Try HTML5 Geolocation (more accurate)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        updateLocation(position.coords.latitude, position.coords.longitude);
+                    },
+                    () => {
+                        // User denied permission or an error occurred, fall back to IP-based.
+                        fetchIpLocation();
+                    }
+                );
+            } else {
+                // Browser doesn't support Geolocation, fall back to IP-based.
+                fetchIpLocation();
+            }
+
+            // 2. Fallback to IP-based Geolocation
+            function fetchIpLocation() {
+                fetch('https://ipapi.co/json/')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.city && data.latitude && data.longitude) {
+                            updateLocation(data.latitude, data.longitude);
+                            ipCityInput.value = data.city;
+                            addressDisplay.textContent = `Your city is ${data.city}. Drag the pin for a more precise location.`;
+                        }
+                    })
+                    .catch(error => {
+                        console.warn("Could not get IP-based location:", error);
+                        addressDisplay.textContent = "Could not detect your city. Please set your location manually by dragging the pin.";
+                    });
+            }
+
+            // --- Map Marker Drag Listener ---
+            google.maps.event.addListener(marker, 'dragend', function() {
+                geocodePosition(marker.getPosition());
+            });
+        }
+    </script>
+    <!-- 
+        IMPORTANT: Replace 'YOUR_API_KEY' below with your actual Google Maps API key.
+        The map will not load without a valid key.
+    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=places&v=weekly" async defer></script>
+</body>
+</html>
