@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <style>
+        /* NOTE: Many of these styles are copied from shop.html for consistency.
+           In a larger application, these would be in a shared CSS file. */
+        :root {
+            --c-bg: #e9ecef; --c-text: #212529; --c-text-secondary: #6c757d; --c-header-bg: #ffffff; --c-header-text: #212529; --c-card-bg: #ffffff; --c-accent: #0d6efd; --c-accent-darker: #0b5ed7; --c-border: #dee2e6; --c-shadow: rgba(0, 0, 0, 0.1);
+            --c-delivery-pulse-bg: rgba(40, 167, 69, 0.1); /* Light green pulse */
+        }
+        body.dark-theme {
+            --c-bg: #121212; --c-text: #e9ecef; --c-text-secondary: #adb5bd; --c-header-bg: #1c1c1c; --c-header-text: #e9ecef; --c-card-bg: #1c1c1c; --c-accent: #3b82f6; --c-accent-darker: #2563eb; --c-border: #343a40; --c-shadow: rgba(0, 0, 0, 0.25);
+            --c-delivery-pulse-bg: rgba(52, 211, 153, 0.1); /* Lighter green pulse for dark mode */
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.6;
+        }
+        body {
+            padding-left: 60px; /* Space for desktop side toolbar */
+            transition: padding-left 0.3s ease, padding-bottom 0.3s ease;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+        img { max-width: 100%; display: block; }
+        a { color: var(--c-accent); text-decoration: none; }
+
+        /* Header for Back Button */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--c-border);
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--c-text);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        .back-link:hover {
+            background-color: var(--c-card-bg);
+        }
+        .back-link svg {
+            stroke: currentColor;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .save-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--c-text-secondary);
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .save-btn:hover {
+            background-color: var(--c-bg);
+            color: var(--c-accent);
+        }
+        .save-btn.saved {
+            color: var(--c-accent);
+        }
+        .save-btn.saved svg {
+            fill: var(--c-accent);
+            stroke: var(--c-accent);
+        }
+
+        .star-rating .star-empty {
+            color: var(--c-text-secondary);
+            opacity: 0.4;
+        }
+        .star-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.1rem;
+            margin-top: 0.25rem;
+        }
+        .star-rating svg {
+            width: 16px;
+            height: 16px;
+            color: #f59e0b; /* Amber color for stars */
+        }
+        .star-rating .rating-text {
+            margin-left: 0.25rem;
+            font-size: 0.8rem;
+            color: var(--c-text-secondary);
+        }
+
+        .product-title-line {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-title-line h1 {
+            margin: 0;
+            flex-grow: 1;
+        }
+        .visit-store-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background-color: var(--c-bg);
+            color: var(--c-text-secondary);
+            font-weight: 500;
+            border: 1px solid var(--c-border);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-top: 0.5rem; /* Align with h1 baseline */
+        }
+        .visit-store-btn:hover { background-color: var(--c-accent); color: white; border-color: var(--c-accent); }
+        .visit-store-btn svg { width: 20px; height: 20px; stroke: currentColor; }
+
+        /* Main Product Layout */
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .main-image-wrapper {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--c-shadow);
+            background-color: var(--c-card-bg);
+        }
+        .main-image-wrapper img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .main-image-wrapper img:hover {
+            transform: scale(1.05);
+        }
+        .thumbnail-images {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .thumbnail-images img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+        .thumbnail-images img:hover {
+            border-color: var(--c-text-secondary);
+        }
+        .thumbnail-images img.active {
+            border-color: var(--c-accent);
+        }
+
+        /* Product Details */
+        .product-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .product-details h1 {
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem;
+            line-height: 1.2;
+        }
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .product-price {
+            font-size: 1.75rem;
+            font-weight: 300;
+            color: var(--c-accent);
+            margin: 0;
+        }
+        .product-description {
+            margin: 0 0 1.5rem;
+            color: var(--c-text-secondary);
+        }
+        .product-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px dashed var(--c-border); /* Changed to dashed border */
+            border-radius: 8px;
+            color: var(--c-text-secondary);
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+        }
+        .product-feature svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            flex-shrink: 0;
+        }
+        .product-feature.available {
+            color: #28a745; /* Green for available */
+            border-color: #28a745;
+            animation: pulse-background 2.5s ease-in-out infinite;
+        }
+        body.dark-theme .product-feature.available {
+            color: #34d399; /* A lighter green for dark mode */
+            border-color: #34d399;
+        }
+        .product-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            color: var(--c-text-secondary);
+            font-weight: 500;
+            border: 1px solid var(--c-border);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            width: fit-content; /* Ensure button doesn't stretch full width */
+        }
+        .product-location:hover {
+            background-color: var(--c-card-bg);
+            border-color: var(--c-accent);
+            color: var(--c-accent);
+        }
+        .product-location svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Action Button for Contact */
+        .action-button {
+            display: block;
+            background-color: var(--c-accent);
+            color: white !important;
+            padding: 0.85rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.2s ease;
+        }
+        .action-button:hover {
+            background-color: var(--c-accent-darker);
+        }
+        /* New styles for multiple action buttons */
+        .action-buttons-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+        .action-buttons-group .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem; /* A more balanced padding for icons + text */
+        }
+        .action-buttons-group .action-button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+        .action-buttons-group .action-button.whatsapp { background-color: #25D366; }
+        .action-buttons-group .action-button.whatsapp:hover { background-color: #1DA851; }
+        .action-buttons-group .action-button.call { background-color: #34B7F1; }
+        .action-buttons-group .action-button.call:hover { background-color: #2999c6; }
+        .action-buttons-group .action-button.disabled {
+            background-color: #6c757d; /* A neutral, disabled color */
+            cursor: not-allowed;
+            pointer-events: none; /* Prevents clicks and hover effects */
+        }
+        .action-buttons-group .action-button.whatsapp.disabled {
+            background-color: #25D366; /* Use brand color */
+            opacity: 0.5; /* Make it look faded/disabled */
+        }
+
+        /* Merchant Info Box */
+        .merchant-info-box {
+            background-color: var(--c-card-bg);
+            border: 1px solid var(--c-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: auto; /* Pushes box to the bottom */
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .merchant-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: inherit;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: -0.5rem;
+            transition: background-color 0.2s ease;
+        }
+        .merchant-profile:hover {
+            background-color: var(--c-bg);
+        }
+        .merchant-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .merchant-profile-details {
+            line-height: 1.3;
+        }
+        .merchant-profile-details .name {
+            font-weight: 600;
+            color: var(--c-text);
+        }
+        .merchant-profile-details .role {
+            font-size: 0.9rem;
+            color: var(--c-text-secondary);
+        }
+        .product-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            text-align: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--c-border);
+        }
+        .stat-item .count {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--c-accent);
+        }
+        .stat-item .label {
+            font-size: 0.85rem;
+            color: var(--c-text-secondary);
+        }
+
+        /* Loading/Error State */
+        .message-container {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--c-text-secondary);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 1.5rem; /* Reduce gap on mobile */
+            }
+            .product-details h1 {
+                font-size: 1.7rem; /* Slightly smaller title on mobile */
+            }
+            .product-price {
+                font-size: 1.4rem; /* Slightly smaller price on mobile */
+            }
+            .product-description {
+                font-size: 0.95rem; /* Slightly larger for better readability */
+            }
+            .merchant-info-box {
+                padding: 1.25rem;
+            }
+            .action-button {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+            .contact-box {
+                margin-top: 2rem;
+            }
+        }
+        @keyframes pulse-background {
+            0% { background-color: transparent; }
+            50% { background-color: var(--c-delivery-pulse-bg); }
+            100% { background-color: transparent; }
+        }
+
+        /* Skeleton Loader Styles */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .skeleton {
+            background-color: #e0e0e0;
+            background-image: linear-gradient(to right, #e0e0e0 0%, #f0f0f0 20%, #e0e0e0 40%, #e0e0e0 100%);
+            background-repeat: no-repeat;
+            background-size: 2000px 100%;
+            animation: shimmer 2s linear infinite;
+            border-radius: 8px;
+        }
+        body.dark-theme .skeleton {
+            background-color: #2c2c2c;
+            background-image: linear-gradient(to right, #2c2c2c 0%, #3a3a3a 20%, #2c2c2c 40%, #2c2c2c 100%);
+        }
+        .skeleton.skeleton-text { height: 1em; margin-bottom: 0.75rem; }
+        .skeleton.skeleton-title { height: 2.5rem; margin-bottom: 1rem; }
+        .skeleton.skeleton-price { height: 1.75rem; width: 40%; margin-bottom: 1.5rem; }
+        .skeleton.skeleton-button { height: 50px; }
+        .skeleton.skeleton-image { aspect-ratio: 1 / 1; }
+        .skeleton-thumbnails { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .skeleton-thumbnails .skeleton { aspect-ratio: 1 / 1; }
+        .skeleton-merchant-box {
+            margin-top: auto;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--c-border);
+        }
+
+        /* Side Toolbar Styles (from shop.html) */
+        .toolbar-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            box-shadow: 0 0 0 2px var(--c-header-bg);
+        }
+        .side-toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 60px;
+            background-color: var(--c-header-bg);
+            border-right: 1px solid var(--c-border);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.75rem 0;
+            box-shadow: 1px 0 5px var(--c-shadow);
+            transition: all 0.3s ease;
+        }
+        .side-toolbar .toolbar-logo img {
+            height: 35px;
+            width: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .toolbar-item {
+            background: none;
+            border: none;
+            color: var(--c-text-secondary);
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: color 0.2s ease;
+            position: relative;
+            margin-top: 17px;
+        }
+        .toolbar-item:hover { color: var(--c-accent); }
+        .toolbar-item svg { width: 24px; height: 24px; stroke: currentColor; }
+        .account-button { display: none; }
+        .toolbar-item.settings {
+            margin-top: auto;
+            position: absolute;
+            bottom: 5%;
+        }
+        @media (max-width: 768px) {
+            body { padding-left: 0; padding-bottom: 45px; }
+            .side-toolbar {
+                top: auto;
+                bottom: 0;
+                width: 100%;
+                height: 45px;
+                flex-direction: row;
+                border-radius: 9px 9px 0px 0px;
+                justify-content: space-around;
+                align-items: center;
+                border-right: none;
+                border-top: 1px solid #000000;
+                padding: 0;
+                background-color: var(--c-header-bg-translucent);
+                -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+            }
+            .side-toolbar .toolbar-logo { display: none; }
+            .toolbar-item { flex-grow: 1; color: var(--c-text); margin-top: 0; }
+            .side-toolbar .settings { display: none; position: static; }
+            .side-toolbar .account-button { display: flex; }
+            .toolbar-item svg { width: 22px; height: 22px; }
+            .toolbar-badge {
+                top: 10px; right: 28px; background-color: #e5192d; width: 15px;
+                border: none; height: 15px; font-size: 0.7rem;
+                box-shadow: 0 0 0 2px var(--c-header-bg-translucent);
+            }
+        }
+
+        /* --- Similar Products Section Styles (Copied for consistency) --- */
+        #similar-products-section {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--c-border);
+        }
+        .product-row-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .product-row-header h2 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem;
+            padding-top: 1rem;
+        }
+
+        .product-card {
+            background-color: var(--c-card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px var(--c-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px var(--c-shadow);
+        }
+        .product-card img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+        .product-card-content {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card h3 {
+            font-size: 1.1rem;
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+            color: var(--c-text);
+            /* Truncate to 2 lines */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 2.86rem; /* 1.1rem * 1.3 * 2 */
+        }
+        .product-card .price {
+            font-weight: bold;
+            color: var(--c-accent);
+            margin-top: auto; /* Pushes price to the bottom */
+            padding-top: 0.5rem;
+        }
+
+        @media (max-width: 992px) {
+            /* No change needed, auto-fill handles responsiveness */
+        }
+
+        @media (max-width: 768px) {
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+            .product-card h3 {
+                font-size: 0.9rem;
+                min-height: 2.34rem; /* 0.9rem * 1.3 * 2 */
+            }
+            .product-card-content { padding: 0.75rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="side-toolbar" aria-label="Utility navigation">
+        <a href="{% if user %}/account{% else %}#{% endif %}" class="toolbar-logo" aria-label="Account">
+            {% if user and user.name %}
+            <img src="{{ user.photo or 'https://placehold.co/40x40/222831/EEEEEE?text=' + user.name[0]|upper }}" alt="User initial logo">
+            {% else %}
+            <img src="https://placehold.co/40x40/222831/EEEEEE?text=M&font=sans" alt="MyStore mini logo">
+            {% endif %}
+        </a>
+        <a href="/" class="toolbar-item" aria-label="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </a>
+        {% if user and user.role == 'admin' %}
+        <a href="/admin" class="toolbar-item" aria-label="Product Manager">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </a>
+        {% endif %}
+        <a href="/saved" class="toolbar-item" aria-label="Saved Items">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        </a>
+        <a href="/chat" class="toolbar-item" aria-label="Chat with support">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            {% if total_unread_count and total_unread_count > 0 %}
+                <span class="toolbar-badge">{{ total_unread_count }}</span>
+            {% endif %}
+        </a>
+        <a href="/account" class="toolbar-item account-button" aria-label="My Account">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </a>
+        <a href="/settings" class="toolbar-item settings" aria-label="Settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </a>
+    </nav>
+    <div class="container" id="product-page-container">
+        <header class="page-header">
+            <a href="/" class="back-link" aria-label="Back to Shop">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </a>
+        </header>
+
+        <main id="product-content">
+            <!-- This container will be filled by JavaScript -->
+        </main>
+
+        <!-- Similar Products Section -->
+        <section id="similar-products-section" style="display: none;">
+            <div class="product-row-header">
+                <h2>Similar Products</h2>
+            </div>
+            <div class="product-grid" id="similar-products-grid">
+                <!-- Similar products will be injected here -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = {{ user|tojson }};
+
+            // --- HELPER FUNCTIONS ---
+            const getSavedItems = () => {
+                const saved = localStorage.getItem('savedItems');
+                return saved ? JSON.parse(saved) : [];
+            };
+
+            const isItemSaved = (productId) => {
+                return getSavedItems().includes(productId);
+            };
+
+            const toggleSaveStatus = (productId) => {
+                let savedItems = getSavedItems();
+                if (savedItems.includes(productId)) {
+                    savedItems = savedItems.filter(id => id !== productId);
+                } else {
+                    savedItems.push(productId);
+                }
+                localStorage.setItem('savedItems', JSON.stringify(savedItems));
+            };
+
+            function renderStars(rating, count) {
+                if (!count || count === 0) return '';
+                const full_stars = Math.floor(rating);
+                const half_star = (rating % 1) >= 0.5 ? 1 : 0;
+                const empty_stars = 5 - full_stars - half_star;
+                const star_filled = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+                const star_half = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27V2z"/></svg>';
+                const star_empty = '<svg class="star-empty" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+                
+                let starsHTML = star_filled.repeat(full_stars);
+                if (half_star) starsHTML += star_half;
+                starsHTML += star_empty.repeat(empty_stars);
+
+                return `<div class="star-rating">${starsHTML}<span class="rating-text">${rating.toFixed(1)} (${count})</span></div>`;
+            }
+
+            // --- RENDER FUNCTIONS ---
+            function renderSkeleton() {
+                const container = document.getElementById('product-content');
+                container.innerHTML = `
+                    <div class="product-layout">
+                        <div class="image-gallery">
+                            <div class="main-image-wrapper">
+                                <div class="skeleton skeleton-image"></div>
+                            </div>
+                            <div class="skeleton-thumbnails">
+                                <div class="skeleton"></div>
+                                <div class="skeleton"></div>
+                                <div class="skeleton"></div>
+                                <div class="skeleton"></div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="skeleton skeleton-title" style="width: 80%;"></div>
+                            <div class="skeleton skeleton-price"></div>
+                            <div class="skeleton skeleton-text" style="width: 95%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 70%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 85%; margin-top: 1rem; margin-bottom: 2rem;"></div>
+                            <div class="skeleton-merchant-box">
+                                 <div class="skeleton skeleton-button" style="height: 48px; margin-bottom: 1rem;"></div>
+                                 <div class="skeleton skeleton-button" style="height: 48px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function generateSimilarProductCardHTML(product) {
+                const imageUrl = product.image_filenames && product.image_filenames.length > 0
+                    ? `/static/images/${product.image_filenames[0]}`
+                    : 'https://placehold.co/500x500/e9ecef/6c757d?text=No+Image';
+
+                return `
+                    <a href="/product?id=${product.id}" class="product-card">
+                        <img src="${imageUrl}" alt="${product.name}" loading="lazy">
+                        <div class="product-card-content">
+                            <h3>${product.name}</h3>
+                            <p class="price">${product.price} XAF</p>
+                        </div>
+                    </a>
+                `;
+            }
+
+            async function renderSimilarProducts(productId) {
+                const container = document.getElementById('similar-products-grid');
+                const section = document.getElementById('similar-products-section');
+                if (!container || !section) return;
+
+                try {
+                    const response = await fetch(`/api/products/similar/${productId}`);
+                    if (!response.ok) throw new Error('Failed to fetch similar products');
+                    const similarProducts = await response.json();
+
+                    if (similarProducts.length > 0) {
+                        container.innerHTML = similarProducts.map(generateSimilarProductCardHTML).join('');
+                        section.style.display = 'block';
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    section.style.display = 'none'; // Hide section on error
+                }
+            }
+
+            function renderProductPage(data) {
+                const container = document.getElementById('product-content');
+                const { product, admin, views, contacts } = data;
+
+                const thumbnailsHTML = product.images.map((img, index) => 
+                    `<img src="${img}" alt="Thumbnail ${index + 1} for ${product.name}" class="${index === 0 ? 'active' : ''}">`
+                ).join('');
+
+                const homeDeliveryHTML = product.home_delivery !== null ? `
+                    <div class="product-feature ${product.home_delivery ? 'available' : ''}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2h10v12H5z"></path><path d="M14 9h4l4 4v4h-8v-8z"></path><circle cx="7.5" cy="18.5" r="2.5"></circle><circle cx="17.5" cy="18.5" r="2.5"></circle></svg>
+                        <span>${product.home_delivery ? 'Home Delivery Available' : 'Home Delivery Not Available'}</span>
+                    </div>` : '';
+
+                const locationHTML = product.location ? `
+                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(product.location)}" target="_blank" rel="noopener noreferrer" class="product-location">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <span>View Location: ${product.location}</span>
+                    </a>` : '';
+
+                let merchantBoxHTML = '';
+                if (admin) {
+                    const isOwner = currentUser && (currentUser.id === admin.id);
+                    const isMainAdmin = currentUser && currentUser.email === 'qrbxb70@gmail.com';
+                    const showStats = isOwner || isMainAdmin;
+                    const showContactButtons = !showStats; // Show for guests and other users
+                    const showLoginButton = false; // Never show the login button here
+
+                    const statsHTML = showStats ? `
+                        <div class="product-stats">
+                            <div class="stat-item"><div class="count">${views}</div><div class="label">Views</div></div>
+                            <div class="stat-item"><div class="count">${contacts}</div><div class="label">Inquiries</div></div>
+                        </div>` : '';
+
+                    const contactButtonsHTML = showContactButtons ? `
+                        <div class="action-buttons-group">
+                            <a href="/chat?product_id=${product.id}" class="action-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path></svg>
+                                <span>Chat</span>
+                            </a>
+                            ${admin.number ? `
+                                <a href="https://wa.me/${admin.number.replace(/\D/g, '')}" target="_blank" rel="noopener noreferrer" class="action-button whatsapp" title="Contact via WhatsApp">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91a9.872 9.872 0 0 0-2.91-7.01zM12.04 20.15h-.01c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.087 8.087 0 0 1-1.26-4.38c0-4.42 3.59-8.02 8.02-8.02s8.02 3.59 8.02 8.02c0 4.42-3.59 8.02-8.02 8.02zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.09-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.78 4.25 3.73.59.22 1.05.36 1.41.46.35.1.66.09.9-.03.28-.12 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.2-.16-.43-.28z"/></svg>
+                                    <span>WhatsApp</span>
+                                </a>
+                                <a href="tel:${admin.number}" class="action-button call" title="Call Merchant">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.02.74-.25 1.02l-2.2 2.2z"></path></svg>
+                                    <span>Call</span>
+                                </a>` : `
+                                <a class="action-button whatsapp disabled" title="Merchant phone number not available"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91a9.872 9.872 0 0 0-2.91-7.01zM12.04 20.15h-.01c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.087 8.087 0 0 1-1.26-4.38c0-4.42 3.59-8.02 8.02-8.02s8.02 3.59 8.02 8.02c0 4.42-3.59 8.02-8.02 8.02zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.09-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.78 4.25 3.73.59.22 1.05.36 1.41.46.35.1.66.09.9-.03.28-.12 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.2-.16-.43-.28z"/></svg><span>WhatsApp</span></a>
+                                <a class="action-button call disabled" title="Merchant phone number not available"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.02.74-.25 1.02l-2.2 2.2z"></path></svg><span>Call</span></a>
+                            `}
+                        </div>` : '';
+
+                    const loginButtonHTML = showLoginButton ? `<a href="/#login" class="action-button">Login to Contact Merchant</a>` : '';
+
+                    merchantBoxHTML = `
+                        <div class="merchant-info-box">
+                            <a href="/store?id=${admin.id}" class="merchant-profile">
+                                <img src="${admin.photo || 'https://placehold.co/50x50/222831/EEEEEE?text=' + admin.name[0].toUpperCase()}" alt="${admin.name}">
+                                <div class="merchant-profile-details">
+                                    <div class="name">${admin.name}</div>
+                                    ${renderStars(admin.avg_rating, admin.ratings_count)}
+                                    <div class="role">Merchant</div>
+                                </div>
+                            </a>
+                            ${statsHTML}
+                            ${contactButtonsHTML}
+                            ${loginButtonHTML}
+                        </div>`;
+                }
+
+                container.innerHTML = `
+                    <div class="product-layout">
+                        <div class="image-gallery">
+                            <div class="main-image-wrapper">
+                                <img id="main-product-image" src="${product.images[0] || 'https://placehold.co/500x500/e9ecef/6c757d?text=No+Image'}" alt="${product.name}">
+                            </div>
+                            <div class="thumbnail-images">${thumbnailsHTML}</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-title-line">
+                                <h1>${product.name}</h1>
+                                <a href="/store?id=${product.admin_id}" class="visit-store-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2V7"/><path d="M2 7v3a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V7"/></svg>
+                                    <span>Visit Store</span>
+                                </a>
+                            </div>
+                            <div class="price-line">
+                                <p class="product-price">${product.price} XAF</p>
+                                <button class="save-btn" id="save-product-btn" aria-label="Save for later" data-product-id="${product.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                                </button>
+                            </div>
+                            <p class="product-description">${product.description}</p>
+                            ${homeDeliveryHTML}
+                            ${locationHTML}
+                            ${merchantBoxHTML}
+                        </div>
+                    </div>`;
+
+                // Re-initialize event listeners for the new dynamic content
+                initializeGalleryListeners();
+                initializeSaveButtonListener();
+
+                // Fetch and render similar products
+                renderSimilarProducts(product.id);
+            }
+
+            // --- EVENT LISTENER INITIALIZERS ---
+            function initializeSaveButtonListener() {
+                const saveButton = document.getElementById('save-product-btn');
+                if (saveButton) {
+                    const productId = saveButton.dataset.productId;
+                    if (isItemSaved(productId)) saveButton.classList.add('saved');
+                    saveButton.addEventListener('click', () => {
+                        toggleSaveStatus(productId);
+                        saveButton.classList.toggle('saved');
+                    });
+                }
+            }
+
+            function initializeGalleryListeners() {
+                const mainImage = document.getElementById('main-product-image');
+                const thumbnails = document.querySelectorAll('.thumbnail-images img');
+                if (mainImage && thumbnails.length > 0) {
+                    thumbnails.forEach(thumb => {
+                        thumb.addEventListener('click', () => {
+                            mainImage.src = thumb.src;
+                            thumbnails.forEach(t => t.classList.remove('active'));
+                            thumb.classList.add('active');
+                        });
+                    });
+                }
+            }
+
+            async function initializePage() {
+                const container = document.getElementById('product-content');
+                const productId = new URLSearchParams(window.location.search).get('id');
+
+                renderSkeleton(); // Show skeleton immediately
+                if (!productId) {
+                    container.innerHTML = `<div class="message-container"><h2>Product ID is missing.</h2></div>`;
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/product-page/${productId}`);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Product not found.');
+                    }
+                    const data = await response.json();
+                    renderProductPage(data);
+                } catch (error) {
+                    console.error("Failed to load product:", error);
+                    container.innerHTML = `<div class="message-container"><h2>${error.message}</h2></div>`;
+                }
+            }
+
+            // --- THEME APPLICATION ---
+            const applyTheme = (theme) => {
+                document.body.classList.toggle('dark-theme', theme === 'dark');
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'theme') applyTheme(e.newValue);
+            });
+
+            // --- START ---
+            initializePage();
+        });
+    </script>
+
+</body>
+</html>
