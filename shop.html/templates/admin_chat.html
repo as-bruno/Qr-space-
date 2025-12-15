@@ -303,11 +303,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const convoToOpen = urlParams.get('open_convo');
             if (convoToOpen) {
-                // Use a small timeout to ensure all DOM elements are rendered before we search for the item.
-                setTimeout(() => {
-                    const convoItemToSelect = document.querySelector(`.convo-item[data-conversation-id="${convoToOpen}"]`);
-                    if (convoItemToSelect) convoItemToSelect.click();
-                }, 150); // 150ms delay is a robust value.
+                const convoItemToSelect = document.querySelector(`.convo-item[data-conversation-id="${convoToOpen}"]`);
+                if (convoItemToSelect) {
+                    setTimeout(() => {
+                        convoItemToSelect.click();
+                    }, 100); // Use a small timeout to ensure the page is fully rendered
+                }
             }
 
             function formatTime(isoString) {
@@ -471,7 +472,7 @@
                     listBody.insertAdjacentHTML('afterbegin', newItemHTML); // Add to top of the list
                     convoItem = listBody.querySelector(`.convo-item[data-conversation-id="${convoId}"]`);
                     // Add the click listener to the newly created item
-                    if (convoItem && newUser) {
+                    if (convoItem) {
                         convoItem.addEventListener('click', () => {
                             selectConversation(convoItem.dataset.conversationId, convoItem.dataset.userName, newUser.id);
                         });

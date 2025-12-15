@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
     <style>
         :root {
             --c-bg: #e9ecef; --c-text: #212529; --c-text-secondary: #6c757d; --c-header-bg: #ffffff; --c-card-bg: #ffffff; --c-accent: #0d6efd; --c-accent-darker: #0b5ed7; --c-border: #dee2e6; --c-shadow: rgba(0, 0, 0, 0.1);
@@ -24,24 +21,6 @@
         body {
             padding-left: 60px; /* Space for desktop side toolbar */
             transition: padding-left 0.3s ease, padding-bottom 0.3s ease;
-        }
-        /* New Logo Styles */
-        .mini-logo-text {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.5rem;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--c-accent);
-            color: white;
-            text-decoration: none;
-        }
-        .toolbar-logo img {
-            width: 35px; height: 35px; border-radius: 50%; object-fit: cover;
         }
         .container {
             max-width: 800px;
@@ -376,11 +355,11 @@
 </head>
 <body>
     <nav class="side-toolbar" aria-label="Utility navigation">
-        <a href="{% if user %}/account{% else %}#{% endif %}" class="toolbar-logo" aria-label="Account" style="text-decoration: none;">
+        <a href="{% if user %}/account{% else %}#{% endif %}" class="toolbar-logo" aria-label="Account">
             {% if user and user.name %}
             <img src="{{ user.photo or 'https://placehold.co/40x40/222831/EEEEEE?text=' + user.name[0]|upper }}" alt="User initial logo">
             {% else %}
-            <span class="mini-logo-text">M</span>
+            <img src="https://placehold.co/40x40/222831/EEEEEE?text=M&font=sans" alt="MyStore mini logo">
             {% endif %}
         </a>
         <a href="/" class="toolbar-item" aria-label="Home">

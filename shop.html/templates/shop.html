@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webstore</title>
+    <title>My Awesome Webstore</title>
     <style>
         /* General Styling */
         :root {
@@ -118,7 +118,6 @@
             height: 40px;
             width: auto;
             margin: 0;
-            border-radius: 9px;
         }
 
         header nav ul {
@@ -287,7 +286,6 @@
             background: none;
             border: none;
             cursor: pointer;
-            width: 35px;
         }
 
         /* Main Content */
@@ -377,7 +375,7 @@
         .carousel-item {
             min-width: 100%;
             position: relative;
-            aspect-ratio: 22 / 9;
+            aspect-ratio: 16 / 9;
             display: flex;
             align-items: flex-end;
             justify-content: flex-start;
@@ -633,16 +631,15 @@
         }
 
         .product-name-desktop h3 {
+            margin: 0; /* Reset margin as it's now on the wrapper */
             font-size: 1.2rem;
             color: var(--c-card-text);
-            display: inline-flex;
-            white-space: nowrap;
+            display: inline-flex; /* Use flex to ensure spans stay in a single line */
+            white-space: nowrap; /* Prevent text within spans from wrapping */
+            /* Truncate by default if not scrolling */
             text-overflow: ellipsis;
             overflow: hidden;
             width: 100%;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-direction: column;
         }
 
         .product-name-desktop h3.is-scrolling {
@@ -658,7 +655,7 @@
         
         .product-card .product-description {
             font-size: 0.9rem;
-            margin: 0.5rem 1rem 0rem; /* Added top margin to separate from title */
+            margin: 0 1rem 0rem; /* Removed top margin, reduced bottom margin */
             color: var(--c-text-secondary);
             flex-grow: 1; /* Pushes price and button to the bottom */
             /* Truncate description to 2 lines to keep card height consistent */
@@ -944,16 +941,27 @@
         }
 
         /* Marquee animation shared styles */
-        .product-name-desktop h3 span:last-child {
+        .product-name-desktop h3 span:last-child,
+        .h3-wrapper h3 span:last-child {
             display: none; /* Hide duplicate text by default */
         }
-        .product-name-desktop h3.is-scrolling span:last-child {
+        .product-name-desktop h3.is-scrolling span:last-child,
+        .h3-wrapper h3.is-scrolling span:last-child {
             display: inline; /* Show duplicate text only when scrolling */
             padding-left: 2rem; /* Space between repeated text */
         }
-            
+
         @media (max-width: 768px) {
             /* ... existing mobile styles ... */
+
+            .h3-wrapper h3 span:last-child {
+                display: none; /* Hide duplicate text by default */
+            }
+            .h3-wrapper h3.is-scrolling span:last-child {
+                display: inline; /* Show duplicate text only when scrolling */
+                padding-left: 2rem; /* Space between repeated text */
+            }
+
             .product-card .product-price {
                 font-size: 0.7rem; /* Make price font even smaller */
                 margin: 0;
@@ -1013,26 +1021,6 @@
                 display: none;
             }
         }
-
-    /* ================================================= */
-    /*      Progressive Image Loading (Blur-Up)        */
-    /* ================================================= */
-    .progressive-image {
-        aspect-ratio: 1 / 1;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        /* Start blurred */
-        filter: blur(20px);
-        /* Animate the filter property for a smooth "un-blur" */
-        transition: filter 0.5s ease-in-out;
-    }
-    .progressive-image.loaded {
-        /* Remove the blur when the 'loaded' class is added */
-        filter: blur(0px);
-    }
-
-
 
         /* Styles for the new Full Grid View */
         #grid-view-container {
@@ -1132,7 +1120,7 @@
     }
     
     @media (max-width: 500px) {
-        .modal-overlay { padding: -1px 1rem; }
+        .modal-overlay { padding: 0 1rem; }
     }
 
 
@@ -1441,22 +1429,6 @@
                 return formatter.format(number);
             }
 
-            // --- PROGRESSIVE IMAGE LOADING LOGIC ---
-            function progressiveImageLoader() {
-                const imagesToLoad = document.querySelectorAll('img.progressive-image[data-src]');
-                imagesToLoad.forEach(lqipImage => {
-                    const highQualitySrc = lqipImage.dataset.src;
-                    if (highQualitySrc) {
-                        const highQualityImg = new Image();
-                        highQualityImg.src = highQualitySrc;
-                        highQualityImg.onload = () => {
-                            lqipImage.src = highQualitySrc; // Swap the src
-                            lqipImage.classList.add('loaded'); // Trigger the un-blur animation
-                        };
-                    }
-                });
-            }
-
             // --- SKELETON LOADER RENDER FUNCTION ---
             function generateSkeletonCardHTML() {
                 return `
@@ -1482,9 +1454,10 @@
 
                 return `
                     <a href="/product?id=${product.id}" class="product-card" data-product-id="${product.id}">
-                        <img src="${product.img_lqip}" data-src="${product.img}" class="progressive-image" alt="${product.name}" loading="lazy">
+                        <img src="${product.img}" alt="${product.name}" loading="lazy">
                         <div class="product-name-desktop">
                             <h3>
+                                <!-- The text is duplicated to create a seamless scrolling loop -->
                                 <span>${product.name}</span>
                                 <span aria-hidden="true">${product.name}</span>
                             </h3>
@@ -1499,105 +1472,104 @@
                 `;
             }
 
-            async function initFeaturedCarousel() { // Make it async
+            function initFeaturedCarousel(storeData) {
                 const slider = document.querySelector('.carousel-slider');
                 const paginationContainer = document.querySelector('.carousel-pagination');
                 const prevBtn = document.querySelector('.carousel-btn.prev');
                 const nextBtn = document.querySelector('.carousel-btn.next');
                 if (!slider || !paginationContainer || !prevBtn || !nextBtn) return;
-    
-                try {
-                    // 1. Fetch data from the new ads API
-                    const response = await fetch('/api/ads');
-                    if (!response.ok) throw new Error('Failed to fetch ads');
-                    const featuredAds = await response.json();
-    
-                    if (featuredAds.length === 0) {
-                        document.querySelector('.featured-products').style.display = 'none';
-                        return;
-                    }
-    
-                    // 2. Render slides and pagination dots
-                    // The carousel item is no longer a link. It's just a div.
-                    slider.innerHTML = featuredAds.map(ad => `
+
+                // 1. Get data - using "Best Sellers" for the featured section from the passed data
+                if (!storeData || storeData.length === 0) return;
+                // Use the first section in our ordered data as the featured section.
+                const featuredSection = storeData[0];
+                if (!featuredSection || !featuredSection.products) return;
+                const featuredProducts = featuredSection.products.slice(0, 7); // Get first 7
+
+                // 2. Render slides and pagination dots
+                slider.innerHTML = featuredProducts.map(product => `
+                    <a href="/product?id=${product.id}" class="carousel-item-link" style="display: contents;">
                         <div class="carousel-item">
-                            <img src="${ad.image_url}" alt="${ad.name}">
+                            <img src="${product.img}" alt="${product.name}">
                             <div class="carousel-caption">
-                                <h3>${ad.name}</h3>
-                                <p>${ad.description}</p>
+                                <h3>${product.name}</h3>
+                                <p>${product.desc}</p>
                             </div>
                         </div>
-                    `).join('');
-    
-                    paginationContainer.innerHTML = featuredAds.map((_, index) => 
-                        `<div class="pagination-dot" data-index="${index}"></div>`
-                    ).join('');
-    
-                    // 3. Initialize carousel logic (this part remains the same)
-                    const slides = slider.querySelectorAll('.carousel-item');
-                    const dots = paginationContainer.querySelectorAll('.pagination-dot');
-                    const totalItems = slides.length;
-                    if (totalItems === 0) return;
-    
-                    let currentIndex = 0;
-                    let autoPlayInterval;
-    
-                    let touchStartX = 0;
-                    let touchEndX = 0;
-    
-                    const handleTouchStart = (e) => {
-                        touchStartX = e.touches[0].clientX;
-                        stopAutoPlay();
-                    };
-    
-                    const handleTouchMove = (e) => {
-                        touchEndX = e.touches[0].clientX;
-                    };
-    
-                    const handleTouchEnd = () => {
-                        if (touchStartX - touchEndX > 50) { // Swiped left
-                            showSlide((currentIndex + 1) % totalItems);
-                        } else if (touchEndX - touchStartX > 50) { // Swiped right
-                            showSlide((currentIndex - 1 + totalItems) % totalItems);
-                        }
-                        startAutoPlay();
-                    };
-    
-                    const showSlide = (index) => {
-                        slides.forEach(slide => slide.classList.remove('active'));
-                        dots.forEach(dot => dot.classList.remove('active'));
-                        slides[index].classList.add('active');
-                        dots[index].classList.add('active');
-                        slider.style.transform = `translateX(${-index * 100}%)`;
-                        currentIndex = index;
-                    };
-    
-                    const startAutoPlay = () => {
-                        stopAutoPlay();
-                        autoPlayInterval = setInterval(() => {
-                            const nextIndex = (currentIndex + 1) % totalItems;
-                            showSlide(nextIndex);
-                        }, 4000);
-                    };
-    
-                    const stopAutoPlay = () => clearInterval(autoPlayInterval);
-    
-                    nextBtn.addEventListener('click', () => showSlide((currentIndex + 1) % totalItems));
-                    prevBtn.addEventListener('click', () => showSlide((currentIndex - 1 + totalItems) % totalItems));
-                    dots.forEach(dot => dot.addEventListener('click', () => showSlide(parseInt(dot.dataset.index))));
-                    slider.closest('.carousel-container').addEventListener('mouseenter', stopAutoPlay);
-                    slider.closest('.carousel-container').addEventListener('mouseleave', startAutoPlay);
-                    slider.addEventListener('touchstart', handleTouchStart, { passive: true });
-                    slider.addEventListener('touchmove', handleTouchMove, { passive: true });
-                    slider.addEventListener('touchend', handleTouchEnd);
-    
-                    showSlide(0);
+                    </a>
+                `).join('');
+
+                paginationContainer.innerHTML = featuredProducts.map((_, index) => 
+                    `<div class="pagination-dot" data-index="${index}"></div>`
+                ).join('');
+
+                // 3. Initialize carousel logic
+                const slides = slider.querySelectorAll('.carousel-item');
+                const dots = paginationContainer.querySelectorAll('.pagination-dot');
+                const totalItems = slides.length;
+                if (totalItems === 0) return;
+
+                let currentIndex = 0;
+                let autoPlayInterval;
+
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                const handleTouchStart = (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    stopAutoPlay();
+                };
+
+                const handleTouchMove = (e) => {
+                    touchEndX = e.touches[0].clientX;
+                };
+
+                const handleTouchEnd = () => {
+                    if (touchStartX - touchEndX > 50) { // Swiped left
+                        showSlide((currentIndex + 1) % totalItems);
+                    } else if (touchEndX - touchStartX > 50) { // Swiped right
+                        showSlide((currentIndex - 1 + totalItems) % totalItems);
+                    }
                     startAutoPlay();
-    
-                } catch (error) {
-                    console.error("Failed to initialize featured carousel:", error);
-                    document.querySelector('.featured-products').style.display = 'none';
-                }
+                };
+
+                const showSlide = (index) => {
+                    // Remove active class from all
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    dots.forEach(dot => dot.classList.remove('active'));
+
+                    // Set new active slide and dot
+                    slides[index].classList.add('active');
+                    dots[index].classList.add('active');
+                    slider.style.transform = `translateX(${-index * 100}%)`;
+                    currentIndex = index;
+                };
+
+                const startAutoPlay = () => {
+                    stopAutoPlay(); // Ensure no multiple intervals are running
+                    autoPlayInterval = setInterval(() => {
+                        const nextIndex = (currentIndex + 1) % totalItems;
+                        showSlide(nextIndex);
+                    }, 4000); // A bit longer to appreciate the animation
+                };
+
+                const stopAutoPlay = () => clearInterval(autoPlayInterval);
+
+                // Event Listeners
+                nextBtn.addEventListener('click', () => showSlide((currentIndex + 1) % totalItems));
+                prevBtn.addEventListener('click', () => showSlide((currentIndex - 1 + totalItems) % totalItems));
+                dots.forEach(dot => dot.addEventListener('click', () => showSlide(parseInt(dot.dataset.index))));
+                slider.closest('.carousel-container').addEventListener('mouseenter', stopAutoPlay);
+                slider.closest('.carousel-container').addEventListener('mouseleave', startAutoPlay);
+
+                // Touch/Swipe listeners for mobile
+                slider.addEventListener('touchstart', handleTouchStart, { passive: true });
+                slider.addEventListener('touchmove', handleTouchMove, { passive: true });
+                slider.addEventListener('touchend', handleTouchEnd);
+
+                // Initial setup
+                showSlide(0);
+                startAutoPlay();
             }
 
             function renderCategoryScroller(storeData) {
@@ -1737,13 +1709,12 @@
             function mapProductData(product) {
                 // Maps a single product from the API format to the client-side format.
                 return {
-                    img_lqip: product.image_filenames_lqip?.[0] ? `/uploads/${product.image_filenames_lqip[0]}` : 'https://placehold.co/32x32/e9ecef/6c757d',
                     id: product.id, // "000001"
                     name: product.name, // "Vintage Leather Jacket"
                     desc: product.description, // "A stylish vintage leather jacket..."
                     price: product.price, // 150.00
                     location: product.location, // "New York"
-                    img: product.image_filenames && product.image_filenames.length > 0 ? `/uploads/${product.image_filenames[0]}` : 'https://placehold.co/500x500/e9ecef/6c757d?text=No+Image',
+                    img: product.image_filenames && product.image_filenames.length > 0 ? `/static/images/${product.image_filenames[0]}` : 'https://placehold.co/500x500/e9ecef/6c757d?text=No+Image',
                     type: product.type || 'Uncategorized', // "Apparel"
                     date_added: product.date_added // "2024-05-15T..."
                 };
@@ -1791,7 +1762,7 @@
                 // 1. Group all products by their GENERAL category.
                 const productsByGeneralCategory = products.reduce((acc, product) => {
                     const generalCategory = getGeneralCategory(product.type);
-                    if (product) (acc[generalCategory] = acc[generalCategory] || []).push(product);
+                    (acc[generalCategory] = acc[generalCategory] || []).push(product);
                     return acc;
                 }, {});
   
@@ -1868,23 +1839,20 @@
                     const products = await response.json();
 
                     // 1. Map and sort all products once
-                    // Filter out any null/undefined entries from the source data before mapping
-                    // to prevent errors if the JSON data is malformed.
-                    const allMappedProducts = products.filter(p => p).map(mapProductData);
+                    const allMappedProducts = products.map(mapProductData);
                     allMappedProducts.sort((a, b) => new Date(b.date_added) - new Date(a.date_added));
 
                     // 2. Get data grouped into sections for the default view
                     const storeDataForSections = processStoreData(allMappedProducts);
                     
                     // 3. Render all components for both views
-                    initFeaturedCarousel(); // No longer needs storeData
+                    initFeaturedCarousel(storeDataForSections);
                     renderCategoryScroller(storeDataForSections);
                     renderStore(storeDataForSections);
                     renderFullGridView(allMappedProducts); // Render the (hidden) grid view
                     
                     // 4. Initialize interactive elements
                     initTitleMarquee();
-                    progressiveImageLoader(); // Initialize the image loader
 
                 } catch (error) { 
                     console.error("Failed to initialize shop:", error);
@@ -1967,7 +1935,6 @@
                     const mappedResults = results.map(mapProductData);
                     renderFullGridView(mappedResults);
                     initTitleMarquee(); // Re-initialize marquee for new search result cards
-                    progressiveImageLoader(); // Initialize loader for search results
 
                 } catch (error) {
                     console.error('Search error:', error);
@@ -2197,4 +2164,3 @@
 
 </body>
 </html>
-

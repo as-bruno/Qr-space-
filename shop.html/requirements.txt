@@ -1,9 +1,4 @@
 Flask
 Flask-SocketIO
-gunicorn
-eventlet
 Pillow
-Werkzeug
-python-dotenv
-filelock
-redis
+eventlet

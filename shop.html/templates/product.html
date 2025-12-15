@@ -585,16 +585,24 @@
             flex-direction: column;
         }
         .product-card h3 {
-            /* This is now handled by the .product-name-desktop h3 selector */
+            font-size: 1.1rem;
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+            color: var(--c-text);
+            /* Truncate to 2 lines */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 2.86rem; /* 1.1rem * 1.3 * 2 */
+            display: none;
         }
         .product-card .price {
             font-weight: bold;
             color: var(--c-accent);
-            margin: 0;
-            padding-top: 0.5rem; /* Add some space above the meta line */
-            /* The conflicting 'margin-top: auto' has been removed.
-               The .product-meta-line now correctly handles pushing content to the bottom.
-            */
+            margin-top: auto; /* Pushes price to the bottom */
+            padding-top: 0.5rem;
         }
 
         @media (max-width: 992px) {
@@ -610,96 +618,6 @@
             .product-card-content { padding: 0.75rem; }
         }
 
-        /* --- Styles for Similar Product Cards (from store.html) --- */
-        .product-card .location {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--c-text-secondary);
-        }
-        .product-card .location svg {
-            width: 14px;
-            height: 14px;
-            fill: #dc3545;
-            flex-shrink: 0;
-        }
-        .product-meta-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto; /* Pushes this whole line to the bottom */
-            padding-top: 0.25rem;
-        }
-        .delivery-icon {
-            color: var(--c-text-secondary);
-        }
-        .delivery-icon.available {
-            color: #28a745;
-        }
-        body.dark-theme .delivery-icon.available {
-            color: #34d399; /* Lighter green for dark mode */
-        }
-        .delivery-icon svg {
-            width: 20px;
-            height: 20px;
-            stroke: currentColor;
-        }
-        .product-name-desktop {
-            overflow: hidden;
-            margin: 0;
-        }
-        .product-name-desktop h3 {
-            
-            font-size: 1.1rem;
-            line-height: 1.3;
-            color: var(--c-text);
-            display: inline-flex;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            width: 100%;
-            min-height: 1.43rem; /* font-size * line-height */
-        }
-        .product-name-desktop h3.is-scrolling {
-            animation: marquee 8s linear infinite;
-            text-overflow: clip;
-            width: auto;
-        }
-        .product-name-desktop h3.is-scrolling span:last-child {
-            display: inline;
-            padding-left: 2rem;
-        }
-        .product-name-desktop h3 span:last-child { display: none; }
-
-        /* ================================================= */
-        /*      Progressive Image Loading (Blur-Up)        */
-        /* ================================================= */
-        .progressive-image {
-            /* The aspect-ratio will be on the image to prevent layout shift */
-            aspect-ratio: 1 / 1;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Start blurred */
-            filter: blur(20px);
-            /* Animate the filter property for a smooth "un-blur" */
-            transition: filter 0.5s ease-in-out;
-        }
-        .progressive-image.loaded {
-            /* Remove the blur when the 'loaded' class is added */
-            filter: blur(0px);
-        }
-
-        @keyframes marquee {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
     </style>
 </head>
 <body>
@@ -772,43 +690,6 @@
                 return getSavedItems().includes(productId);
             };
 
-            function initTitleMarquee() {
-                const titleWrappers = document.querySelectorAll('.product-card .product-name-desktop');
-
-                function checkOverflow() {
-                    titleWrappers.forEach(wrapper => {
-                        const h3 = wrapper.querySelector('h3');
-                        const firstSpan = h3.querySelector('span');
-                        const isDesktop = window.innerWidth > 768;
-
-                        if (isDesktop && firstSpan.scrollWidth > wrapper.clientWidth) {
-                           h3.classList.add('is-scrolling');
-                        } else {
-                            h3.classList.remove('is-scrolling');
-                        }
-                    });
-                };
-
-                window.addEventListener('resize', checkOverflow);
-                checkOverflow(); // Initial check on load
-            }
-
-            // --- PROGRESSIVE IMAGE LOADING LOGIC ---
-            function progressiveImageLoader() {
-                const imagesToLoad = document.querySelectorAll('img.progressive-image[data-src]');
-                imagesToLoad.forEach(lqipImage => {
-                    const highQualitySrc = lqipImage.dataset.src;
-                    if (highQualitySrc) {
-                        const highQualityImg = new Image();
-                        highQualityImg.src = highQualitySrc;
-                        highQualityImg.onload = () => {
-                            lqipImage.src = highQualitySrc; // Swap the src
-                            lqipImage.classList.add('loaded'); // Trigger the un-blur animation
-                        };
-                    }
-                });
-            }
-
             const toggleSaveStatus = (productId) => {
                 let savedItems = getSavedItems();
                 if (savedItems.includes(productId)) {
@@ -867,30 +748,16 @@
             }
 
             function generateSimilarProductCardHTML(product) {
-                const primaryImage = product.image_filenames?.[0];
-                const primaryLqip = product.image_filenames_lqip?.[0];
-
-                const lqipUrl = primaryLqip ? `/uploads/${primaryLqip}` : 'https://placehold.co/32x32/e9ecef/6c757d?text=LQ';
-                const fullUrl = primaryImage ? `/uploads/${primaryImage}` : 'https://placehold.co/500x500/e9ecef/6c757d?text=No+Image';
-
-                const locationHTML = product.location ? `
-                    <div class="location">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        <span>${product.location}</span>
-                    </div>` : '<div></div>'; // Empty div for alignment
-
-                const deliveryHTML = product.home_delivery !== undefined ? `
-                    <div class="delivery-icon ${product.home_delivery ? 'available' : ''}" title="Home Delivery ${product.home_delivery ? 'Available' : 'Not Available'}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2h10v12H5z"></path><path d="M14 9h4l4 4v4h-8v-8z"></path><circle cx="7.5" cy="18.5" r="2.5"></circle><circle cx="17.5" cy="18.5" r="2.5"></circle></svg>
-                    </div>` : '';
+                const imageUrl = product.image_filenames && product.image_filenames.length > 0
+                    ? `/static/images/${product.image_filenames[0]}`
+                    : 'https://placehold.co/500x500/e9ecef/6c757d?text=No+Image';
 
                 return `
                     <a href="/product?id=${product.id}" class="product-card">
-                        <img src="${lqipUrl}" data-src="${fullUrl}" class="progressive-image" alt="${product.name}" loading="lazy">
+                        <img src="${imageUrl}" alt="${product.name}" loading="lazy">
                         <div class="product-card-content">
-                            <div class="product-name-desktop"><h3><span>${product.name}</span><span aria-hidden="true">${product.name}</span></h3></div>
+                            <h3>${product.name}</h3>
                             <p class="price">${product.price} XAF</p>
-                            <div class="product-meta-line">${locationHTML}${deliveryHTML}</div>
                         </div>
                     </a>
                 `;
@@ -909,8 +776,6 @@
                     if (similarProducts.length > 0) {
                         container.innerHTML = similarProducts.map(generateSimilarProductCardHTML).join('');
                         section.style.display = 'block';
-                        initTitleMarquee(); // Initialize marquee for similar products
-                        progressiveImageLoader(); // Initialize for similar products
                     }
 
                 } catch (error) {

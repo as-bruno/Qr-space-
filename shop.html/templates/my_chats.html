@@ -336,15 +336,11 @@
             }
             window.addEventListener('click', () => { if (optionsDropdown) optionsDropdown.classList.remove('show'); });
 
-            // --- FINAL FIX: Handle opening a specific conversation from URL ---
             const urlParams = new URLSearchParams(window.location.search);
             const adminToOpenId = urlParams.get('open_convo_with_admin');
             if (adminToOpenId) {
-                // Use a small timeout to ensure all DOM elements are rendered before we search for the item.
-                setTimeout(() => {
-                    const convoItemToSelect = document.querySelector(`.convo-item[data-admin-id="${adminToOpenId}"]`);
-                    if (convoItemToSelect) convoItemToSelect.click();
-                }, 150); // 150ms delay is a robust value.
+                const convoItemToSelect = document.querySelector(`.convo-item[data-admin-id="${adminToOpenId}"]`);
+                if (convoItemToSelect) setTimeout(() => convoItemToSelect.click(), 100);
             }
         });
     </script>
