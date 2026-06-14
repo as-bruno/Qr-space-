@@ -1,0 +1,160 @@
+2026-06-12 02:46:51,754 [INFO] GeminiGenerator — GeminiGenerator initialised. Key: AIza...Et6g
+2026-06-12 02:46:51,803 [INFO] GeminiGenerator — Searching for Imagen models...
+2026-06-12 02:46:52,914 [ERROR] GeminiGenerator — Error listing Imagen models: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 02:49:28,728 [INFO] GeminiGenerator — GeminiGenerator initialised. Key: AIza...Et6g
+2026-06-12 02:49:28,728 [INFO] GeminiGenerator — Searching for Imagen models...
+2026-06-12 02:49:29,687 [ERROR] GeminiGenerator — Error listing Imagen models: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 03:15:40,658 [INFO] ContentAgent — ContentAgent initialised — model: gemini-2.0-flash
+2026-06-12 04:12:05,067 [INFO] ContentAgent — ContentAgent initialised — model: gemini-2.0-flash
+2026-06-12 04:12:05,453 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:16:00,770 [INFO] ContentAgent — ContentAgent initialised — model: gemini-2.0-flash
+2026-06-12 04:16:01,076 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:17:20,028 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:19:55,996 [INFO] ContentAgent — ContentAgent initialised — model: gemini-2.0-flash
+2026-06-12 04:19:56,216 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:24:14,239 [INFO] ContentAgent — ContentAgent initialised — model: gemini-2.0-flash
+2026-06-12 04:24:14,540 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:25:19,055 [INFO] ContentAgent — ContentAgent initialised — model: gemini-2.0-flash
+2026-06-12 04:25:19,360 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:25:19,876 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:25:20,157 [ERROR] ContentAgent — ClientError during content generation: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-06-12 04:26:24,590 [INFO] ContentAgent — ContentAgent initialised — model: models/gemini-2.5-flash
+2026-06-12 04:26:32,869 [INFO] ContentAgent — Generated 4 content blocks for page PAGE-0001
+2026-06-12 04:26:41,185 [INFO] ContentAgent — Generated 4 content blocks for page PAGE-0002
+2026-06-12 04:26:54,321 [INFO] ContentAgent — Generated 4 content blocks for page PAGE-0003
+2026-06-12 04:26:57,771 [INFO] UIAgent -- UIAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 04:27:16,423 [INFO] ContentAgent — ContentAgent initialised — model: models/gemini-2.5-flash
+2026-06-12 04:27:26,068 [INFO] ContentAgent — Generated 4 content blocks for page PAGE-0004
+2026-06-12 04:27:30,005 [INFO] UIAgent -- UIAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 04:27:46,252 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0001 generated for page PAGE-0001 (4 sections)
+2026-06-12 04:28:12,967 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0002 generated for page PAGE-0002 (4 sections)
+2026-06-12 04:28:26,099 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0003 generated for page PAGE-0002 (4 sections)
+2026-06-12 04:28:52,036 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0004 generated for page PAGE-0003 (4 sections)
+2026-06-12 04:29:09,845 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0005 generated for page PAGE-0003 (4 sections)
+2026-06-12 04:29:13,760 [INFO] CodeAgent -- CodeAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 04:29:33,389 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0006 generated for page PAGE-0004 (4 sections)
+2026-06-12 04:29:37,426 [INFO] CodeAgent -- CodeAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 04:30:07,829 [INFO] CodeAgent -- CodeAgent: index.html written (18.3 KB, 521 lines)
+2026-06-12 04:30:27,905 [INFO] CodeAgent -- CodeAgent: index.html written (19.6 KB, 589 lines)
+2026-06-12 04:31:03,846 [INFO] CodeAgent -- CodeAgent: index.html written (15.8 KB, 506 lines)
+2026-06-12 04:31:23,710 [INFO] CodeAgent -- CodeAgent: index.html written (17.4 KB, 531 lines)
+2026-06-12 04:31:57,999 [INFO] CodeAgent -- CodeAgent: index.html written (14.8 KB, 505 lines)
+2026-06-12 04:32:16,448 [INFO] CodeAgent -- CodeAgent: index.html written (22.3 KB, 652 lines)
+2026-06-12 04:32:54,028 [INFO] CodeAgent -- CodeAgent: index.html written (16.8 KB, 516 lines)
+2026-06-12 04:33:11,930 [INFO] CodeAgent -- CodeAgent: index.html written (16.2 KB, 557 lines)
+2026-06-12 04:33:49,123 [INFO] CodeAgent -- CodeAgent: index.html written (17.9 KB, 564 lines)
+2026-06-12 04:34:05,254 [INFO] CodeAgent -- CodeAgent: index.html written (17.8 KB, 610 lines)
+2026-06-12 14:17:15,021 [INFO] GeminiGenerator — GeminiGenerator initialised. Key: AIza...mQk8
+2026-06-12 14:17:15,054 [INFO] GeminiGenerator — Searching for Imagen models...
+2026-06-12 14:17:15,980 [INFO] GeminiGenerator — Found Imagen models: ['models/imagen-4.0-generate-001', 'models/imagen-4.0-ultra-generate-001', 'models/imagen-4.0-fast-generate-001']
+2026-06-12 14:17:15,980 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-12 14:17:24,489 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781270244.png
+2026-06-12 14:17:24,536 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-12 14:17:30,919 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781270250.png
+2026-06-12 14:18:15,454 [INFO] GeminiGenerator — GeminiGenerator initialised. Key: AIza...mQk8
+2026-06-12 14:18:15,454 [INFO] GeminiGenerator — Searching for Imagen models...
+2026-06-12 14:18:16,259 [INFO] GeminiGenerator — Found Imagen models: ['models/imagen-4.0-generate-001', 'models/imagen-4.0-ultra-generate-001', 'models/imagen-4.0-fast-generate-001']
+2026-06-12 14:18:16,259 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-12 14:18:23,330 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781270303.png
+2026-06-12 14:18:23,398 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-12 14:18:39,319 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781270319.png
+2026-06-12 14:19:36,139 [ERROR] PagePlanner — Detailed planning error: 'charmap' codec can't encode character '\U0001f4d6' in position 0: character maps to <undefined>
+Traceback (most recent call last):
+  File "C:\Users\USER\Desktop\agent1\brain\page_planner.py", line 195, in generate_page_plan
+    print(f"📖 STAGE 1 DEEP PAGE PLAN FOR: {page_name} ({page_id})")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4d6' in position 0: character maps to <undefined>
+2026-06-12 14:19:38,578 [INFO] ContentAgent — ContentAgent initialised — model: models/gemini-2.5-flash
+2026-06-12 14:19:58,971 [INFO] ContentAgent — Generated 6 content blocks for page PAGE-0001
+2026-06-12 14:20:13,531 [ERROR] PagePlanner — Detailed planning error: 'charmap' codec can't encode character '\U0001f4d6' in position 0: character maps to <undefined>
+Traceback (most recent call last):
+  File "C:\Users\USER\Desktop\agent1\brain\page_planner.py", line 195, in generate_page_plan
+    print(f"📖 STAGE 1 DEEP PAGE PLAN FOR: {page_name} ({page_id})")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4d6' in position 0: character maps to <undefined>
+2026-06-12 14:20:26,950 [INFO] ContentAgent — Generated 5 content blocks for page PAGE-0002
+2026-06-12 14:20:29,857 [INFO] UIAgent -- UIAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 14:21:25,849 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0001 generated for page PAGE-0001 (6 sections)
+2026-06-12 14:22:15,021 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0002 generated for page PAGE-0002 (5 sections)
+2026-06-12 14:22:17,355 [INFO] CodeAgent -- CodeAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 14:22:17,405 [ERROR] CodeAgent -- Unexpected error in CodeAgent: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+Traceback (most recent call last):
+  File "C:\Users\USER\Desktop\agent1\code_agent.py", line 427, in generate_page_code
+    html_code = self._generate_html(page_name, route, seo_block, context_summary, nav_links, warnings_block, blueprint_json, content_json)
+  File "C:\Users\USER\Desktop\agent1\code_agent.py", line 231, in _generate_html
+    print(f"[CODE] Phase 1/3 → Generating HTML structure for {page_name}...")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+2026-06-12 14:22:17,462 [ERROR] CodeAgent -- Unexpected error in CodeAgent: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+Traceback (most recent call last):
+  File "C:\Users\USER\Desktop\agent1\code_agent.py", line 427, in generate_page_code
+    html_code = self._generate_html(page_name, route, seo_block, context_summary, nav_links, warnings_block, blueprint_json, content_json)
+  File "C:\Users\USER\Desktop\agent1\code_agent.py", line 231, in _generate_html
+    print(f"[CODE] Phase 1/3 → Generating HTML structure for {page_name}...")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 17: character maps to <undefined>
+2026-06-12 14:33:13,855 [INFO] GeminiGenerator — GeminiGenerator initialised. Key: AIza...mQk8
+2026-06-12 14:33:13,855 [INFO] GeminiGenerator — Searching for Imagen models...
+2026-06-12 14:33:15,395 [INFO] GeminiGenerator — Found Imagen models: ['models/imagen-4.0-generate-001', 'models/imagen-4.0-ultra-generate-001', 'models/imagen-4.0-fast-generate-001']
+2026-06-12 14:33:15,395 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-12 14:33:22,318 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781271202.png
+2026-06-12 14:33:22,408 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 1:1 | Ref Image: False
+2026-06-12 14:33:30,876 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781271210.png
+2026-06-12 14:33:30,919 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-12 14:33:38,764 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781271218.png
+2026-06-12 14:33:38,837 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 9:16 | Ref Image: False
+2026-06-12 14:33:46,153 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781271226.png
+2026-06-12 14:33:46,204 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 1:1 | Ref Image: False
+2026-06-12 14:33:54,790 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781271234.png
+2026-06-12 14:34:18,167 [INFO] ContentAgent — ContentAgent initialised — model: models/gemini-2.5-flash
+2026-06-12 14:34:39,242 [INFO] ContentAgent — Generated 5 content blocks for page PAGE-0001
+2026-06-12 14:34:41,894 [INFO] UIAgent -- UIAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 14:35:36,378 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0001 generated for page PAGE-0001 (5 sections)
+2026-06-12 14:35:39,024 [INFO] CodeAgent -- CodeAgent initialised -- model: models/gemini-2.5-pro
+2026-06-12 14:37:38,038 [ERROR] CodeAgent -- Unexpected error in CodeAgent: 'charmap' codec can't encode character '\u2713' in position 7: character maps to <undefined>
+Traceback (most recent call last):
+  File "C:\Users\USER\Desktop\agent1\code_agent.py", line 444, in generate_page_code
+    print(f"[CODE] ✓ HTML written: {html_path.name} ({html_size_kb} KB, {len(html_code.splitlines())} lines)")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 7: character maps to <undefined>
+2026-06-12 14:39:09,170 [INFO] CodeAgent -- CodeAgent initialised -- model: models/gemini-2.5-pro
+2026-06-13 00:20:31,897 [INFO] GeminiGenerator — GeminiGenerator initialised. Key: AIza...mQk8
+2026-06-13 00:20:31,930 [INFO] GeminiGenerator — Searching for Imagen models...
+2026-06-13 00:20:32,899 [INFO] GeminiGenerator — Found Imagen models: ['models/imagen-4.0-generate-001', 'models/imagen-4.0-ultra-generate-001', 'models/imagen-4.0-fast-generate-001']
+2026-06-13 00:20:32,899 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-13 00:20:41,203 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781306441.png
+2026-06-13 00:38:45,455 [INFO] GeminiGenerator — GeminiGenerator initialised. Key: AIza...mQk8
+2026-06-13 00:38:45,456 [INFO] GeminiGenerator — Searching for Imagen models...
+2026-06-13 00:38:46,464 [INFO] GeminiGenerator — Found Imagen models: ['models/imagen-4.0-generate-001', 'models/imagen-4.0-ultra-generate-001', 'models/imagen-4.0-fast-generate-001']
+2026-06-13 00:38:46,464 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-13 00:38:55,454 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781307535.png
+2026-06-13 00:38:57,025 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 1:1 | Ref Image: False
+2026-06-13 00:39:05,142 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781307545.png
+2026-06-13 00:39:06,465 [INFO] GeminiGenerator — Gemini generating for user brain | Ratio: 16:9 | Ref Image: False
+2026-06-13 00:39:17,279 [INFO] GeminiGenerator — Gemini image saved: gemini_brain_1781307557.png
+2026-06-13 00:39:34,053 [INFO] ContentAgent — ContentAgent initialised — model: models/gemini-2.5-flash
+2026-06-13 00:39:56,227 [INFO] ContentAgent — Generated 5 content blocks for page PAGE-0002
+2026-06-13 00:40:28,398 [INFO] ContentAgent — Generated 4 content blocks for page PAGE-0003
+2026-06-13 00:40:58,460 [INFO] ContentAgent — Generated 4 content blocks for page PAGE-0004
+2026-06-13 00:41:28,002 [INFO] ContentAgent — Generated 3 content blocks for page PAGE-0005
+2026-06-13 00:41:30,699 [INFO] UIAgent -- UIAgent initialised -- model: models/gemini-2.5-pro
+2026-06-13 00:42:18,826 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0002 generated for page PAGE-0002 (5 sections)
+2026-06-13 00:42:58,481 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0003 generated for page PAGE-0003 (4 sections)
+2026-06-13 00:43:36,181 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0004 generated for page PAGE-0004 (4 sections)
+2026-06-13 00:44:13,614 [INFO] UIAgent -- UIAgent: Blueprint UIBP-0005 generated for page PAGE-0005 (3 sections)
+2026-06-13 00:44:16,226 [INFO] CodeAgent -- CodeAgent initialised -- model: models/gemini-2.5-pro

@@ -1,0 +1,127 @@
+# ============================================================
+# PROJECT BRAIN — ENTITY SCHEMA v1.0.0
+# ============================================================
+# All entities written to project_brain.json MUST conform
+# to one of the types defined below.
+# ============================================================
+
+# ── PAGE ────────────────────────────────────────────────────
+page:
+  entity_id:   string          # e.g. PAGE-0001
+  type:        page
+  data:
+    name:       string          # Human-readable page name
+    route:      string          # e.g. /about
+    template:   string          # e.g. landing | blog-list | blog-post | profile
+    sections:   list[string]    # Section IDs on this page
+    seo_id:     string          # → seo_graph entry
+    status:     PENDING | READY | GENERATED
+
+# ── ROUTE ───────────────────────────────────────────────────
+route:
+  entity_id:   string          # e.g. ROUTE-0001
+  type:        route
+  data:
+    path:       string          # e.g. /blog/:slug
+    page_id:    string          # → page_registry entry
+    dynamic:    boolean
+    params:     list[string]    # Dynamic segments if any
+
+# ── ASSET (uploaded) ────────────────────────────────────────
+asset:
+  entity_id:   string          # e.g. ASSET-0001
+  type:        asset
+  data:
+    original_filename: string
+    local_path:        string
+    compressed_path:   string | null
+    url:               string | null   # Relative web path e.g. /assets/hero.webp (set on registration)
+    mime_type:         string
+    size_bytes:        integer | null
+    vision_id:         string | null   # → image_descriptions entry
+    status:            PENDING | ANALYZED | COMPRESSED | READY
+
+# ── IMAGE DESCRIPTION (vision output) ───────────────────────────────────────
+image_description:
+  entity_id:   string          # e.g. VDESC-0001
+  type:        image_description
+  data:
+    asset_id:        string         # → asset_registry entry
+    subject:         string         # concise label for main subject
+    description:     string         # rich agent-usable sentence
+    visual_style:    string         # photorealistic | illustration | flat design | abstract | 3D render | diagram | screenshot | mixed
+    mood:            string         # professional | calm | energetic | playful | dramatic | minimal | luxurious | friendly | dark | warm
+    dominant_colors: list[string]   # up to 5 colour names / hex codes
+    keywords:        list[string]   # for search & image generation prompts
+    suggested_use:   string         # hero background | section background | product shot | team photo | icon | testimonial | blog thumbnail | decorative | logo
+    analyzed_at:     string         # ISO 8601 timestamp
+
+# ── GENERATED ASSET (Imagen 3 output) ───────────────────────
+generated_asset:
+  entity_id:   string          # e.g. GEN-0001
+  type:        generated_asset
+  data:
+    prompt:      string
+    model:       string         # e.g. imagen-3.0-generate-001
+    aspect_ratio: string
+    filename:    string | null
+    local_path:  string | null
+    url:         string | null  # Relative web path e.g. /assets/gen/GEN-0001.webp (set on DONE)
+    page_id:     string | null  # Where it's used
+    status:      PENDING | GENERATING | DONE | FAILED
+
+# ── SEO ENTRY ───────────────────────────────────────────────
+seo:
+  entity_id:   string          # e.g. SEO-0001
+  type:        seo
+  data:
+    page_id:        string
+    title_tag:      string
+    meta_description: string
+    og_image:       string | null   # asset or gen asset ID
+    canonical_url:  string
+    structured_data: object | null
+
+# ── DESIGN TOKEN ────────────────────────────────────────────
+design:
+  entity_id:   string          # e.g. DESIGN-0001
+  type:        design
+  data:
+    palette:         list[string]   # Hex colors
+    typography:      object         # {heading: font, body: font}
+    spacing_scale:   list[integer]
+    border_radius:   string
+    shadows:         list[string]
+
+# ── CONTENT BLOCK ───────────────────────────────────────────
+content:
+  entity_id:   string          # e.g. CONTENT-0001
+  type:        content
+  data:
+    page_id:   string
+    section:   string
+    kind:      hero | text | gallery | cta | card | nav | footer
+    payload:   object           # Freeform section-specific data
+    status:    PENDING | DRAFT | APPROVED
+
+# ── MEMORY (agent memory registry) ───────────────────────────────────────────
+memory:
+  entity_id:   string          # e.g. MEM-0001
+  type:        memory
+  data:
+    key:        string          # e.g. design_style | route_warning | user_rules
+    content:    string          # plain-text context observation or memory
+    importance: integer         # 1-5 (1: detail, 5: critical)
+    created_at: string          # ISO 8601 timestamp
+
+# ── UI BLUEPRINT (UI report for coder) ──────────────────────
+ui_blueprint:
+  entity_id:   string          # e.g. UIBP-0001
+  type:        ui_blueprint
+  data:
+    page_id:           string
+    layout_structure:  object    # Responsive grid, sections flow, visual hierarchy
+    mobile_ux_tactics: list[string] # Mobile optimizations (touch targets, collapsible elements, menu behaviors)
+    animations:        list[object] # Animation logic (fade-ins, transitions, hover states, scroll triggers)
+    styling_rules:     object    # Detailed visual styles (gradients, borders, spacing scales)
+    coder_notes:       string    # Step-by-step layout instructions for the Code Agent
